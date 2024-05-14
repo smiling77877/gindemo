@@ -1,20 +1,132 @@
 package web
 
 import (
+	"gindemo/webbook/internal/domain"
+	"gindemo/webbook/internal/service"
+	regexp "github.com/dlclark/regexp2"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
+const (
+	emailRegexPattern = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$"
+	// 和上面比起来，用 ` 看起来就比较清爽
+	passwordRegexPattern = `^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$`
+)
+
 type UserHandler struct {
+	svc            *service.UserService
+	emailRexExp    *regexp.Regexp
+	passwordRexExp *regexp.Regexp
+}
+
+func NewUserHandler(svc *service.UserService) *UserHandler {
+	return &UserHandler{
+		svc:            svc,
+		emailRexExp:    regexp.MustCompile(emailRegexPattern, regexp.None),
+		passwordRexExp: regexp.MustCompile(passwordRegexPattern, regexp.None),
+	}
 }
 
 func (c *UserHandler) RegisterRoutes(server *gin.Engine) {
-	server.POST("/users/signup", c.Signup)
-	//server.POST("/users/login", c.Login)
-	//server.POST("/users/edit", c.Edit)
-	//server.GET("/users/profile", c.Profile)
+	ug := server.Group("/users")
+	ug.POST("/signup", c.Signup)
+	ug.POST("/login", c.Login)
+	ug.POST("/edit", c.Edit)
+	ug.GET("/profile", c.Profile)
 }
 
 func (c *UserHandler) Signup(ctx *gin.Context) {
-	ctx.String(http.StatusOK, "hello, 你在注册")
+	type SignUpReq struct {
+		Email           string `json:"email"`
+		Password        string `json:"password"`
+		ConfirmPassword string `json:"confirmPassword"`
+	}
+
+	var req SignUpReq
+
+	if err := ctx.Bind(&req); err != nil {
+		return
+	}
+
+	isEmail, err := c.emailRexExp.MatchString(req.Email)
+	if err != nil {
+		ctx.String(http.StatusOK, "系统错误")
+		return
+	}
+	if !isEmail {
+		ctx.String(http.StatusOK, "邮箱格式不正确")
+		return
+	}
+
+	if req.Password != req.ConfirmPassword {
+		ctx.String(http.StatusOK, "两次输入的密码不一致")
+		return
+	}
+
+	isPassword, err := c.passwordRexExp.MatchString(req.Password)
+	if err != nil {
+		ctx.String(http.StatusOK, "系统错误")
+		return
+	}
+	if !isPassword {
+		ctx.String(http.StatusOK, "密码必须包含字母、数字、特殊字符，并且不少于八位")
+		return
+	}
+
+	//调用一下svc的方法
+	err = c.svc.SignUp(ctx, domain.User{
+		Email:    req.Email,
+		Password: req.Password,
+	})
+	switch err {
+	case nil:
+		ctx.String(http.StatusOK, "注册成功")
+	case service.ErrDuplicateEmail:
+		ctx.String(http.StatusOK, "邮箱冲突，请换一个邮箱")
+	default:
+		ctx.String(http.StatusOK, "系统异常")
+	}
+}
+
+func (c *UserHandler) Login(ctx *gin.Context) {
+	type Req struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	var req Req
+	if err := ctx.Bind(&req); err != nil {
+		return
+	}
+
+	u, err := c.svc.Login(ctx, req.Email, req.Password)
+	switch err {
+	case nil:
+		sess := sessions.Default(ctx)
+		sess.Set("userId", u.Id)
+		sess.Options(sessions.Options{
+			// 十五分钟
+			MaxAge: 900,
+		})
+		err = sess.Save()
+		if err != nil {
+			ctx.String(http.StatusOK, "系统错误")
+			return
+		}
+		ctx.String(http.StatusOK, "登录成功")
+	case service.ErrInvalidUserOrPassword:
+		ctx.String(http.StatusOK, "用户名或者密码不对")
+	default:
+		ctx.String(http.StatusOK, "系统错误")
+	}
+}
+
+func (c *UserHandler) Edit(ctx *gin.Context) {
+
+}
+
+func (c *UserHandler) Profile(ctx *gin.Context) {
+	ctx.String(http.StatusOK, "这是 profile")
 }
