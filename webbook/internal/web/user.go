@@ -6,7 +6,9 @@ import (
 	regexp "github.com/dlclark/regexp2"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	jwt "github.com/golang-jwt/jwt/v5"
 	"net/http"
+	"time"
 )
 
 const (
@@ -32,7 +34,8 @@ func NewUserHandler(svc *service.UserService) *UserHandler {
 func (c *UserHandler) RegisterRoutes(server *gin.Engine) {
 	ug := server.Group("/users")
 	ug.POST("/signup", c.Signup)
-	ug.POST("/login", c.Login)
+	//ug.POST("/login", c.Login)
+	ug.POST("/login", c.LoginJWT)
 	ug.POST("/edit", c.Edit)
 	ug.GET("/profile", c.Profile)
 }
@@ -108,7 +111,7 @@ func (c *UserHandler) Login(ctx *gin.Context) {
 		sess.Set("userId", u.Id)
 		sess.Options(sessions.Options{
 			// 十五分钟
-			MaxAge: 900,
+			MaxAge: 30,
 		})
 		err = sess.Save()
 		if err != nil {
@@ -123,10 +126,54 @@ func (c *UserHandler) Login(ctx *gin.Context) {
 	}
 }
 
+func (c *UserHandler) LoginJWT(ctx *gin.Context) {
+	type Req struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	var req Req
+	if err := ctx.Bind(&req); err != nil {
+		return
+	}
+
+	u, err := c.svc.Login(ctx, req.Email, req.Password)
+	switch err {
+	case nil:
+		uc := UserClaims{
+			Uid:       u.Id,
+			UserAgent: ctx.GetHeader("User-Agent"),
+			RegisteredClaims: jwt.RegisteredClaims{
+				// 过期时间
+				ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Minute * 5)),
+			},
+		}
+		token := jwt.NewWithClaims(jwt.SigningMethodHS512, uc)
+		tokenStr, err := token.SignedString(JWTKey)
+		if err != nil {
+			ctx.String(http.StatusOK, "系统错误")
+		}
+		ctx.Header("x-jwt-token", tokenStr)
+		ctx.String(http.StatusOK, "登录成功")
+	case service.ErrInvalidUserOrPassword:
+		ctx.String(http.StatusOK, "用户名或者密码不对")
+	default:
+		ctx.String(http.StatusOK, "系统错误")
+	}
+}
+
 func (c *UserHandler) Edit(ctx *gin.Context) {
 
 }
 
 func (c *UserHandler) Profile(ctx *gin.Context) {
 	ctx.String(http.StatusOK, "这是 profile")
+}
+
+var JWTKey = []byte("sL0hO7kV4cT1aW1zN2gN7qG7jU1jL1iK")
+
+type UserClaims struct {
+	jwt.RegisteredClaims
+	Uid       int64
+	UserAgent string
 }
