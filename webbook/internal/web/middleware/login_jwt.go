@@ -61,7 +61,7 @@ func (m *LoginJWTMiddlewareBuilder) CheckLogin() gin.HandlerFunc {
 
 		// 剩余过期时间 < 50s就要刷新
 		if expireTime.Sub(time.Now()) < time.Second*50 {
-			uc.ExpiresAt = jwt.NewNumericDate(time.Now().Add(time.Minute * 5))
+			uc.ExpiresAt = jwt.NewNumericDate(time.Now().Add(time.Minute * 10))
 			tokenStr, err = token.SignedString(web.JWTKey)
 			ctx.Header("x-jwt-token", tokenStr)
 			if err != nil {

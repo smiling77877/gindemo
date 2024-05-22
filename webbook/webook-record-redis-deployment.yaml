@@ -1,26 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: $title$
+  name: webook-record-redis
   labels:
-    app: $title$
+    app: webook-record-redis
 spec:
-  replicas: $1$
+  replicas: 1
   selector:
     matchLabels:
-      app: $title$
+      app: webook-record-redis
   template:
     metadata:
-      name: $title$
+      name: webook-record-redis
       labels:
-        app: $title$
+        app: webook-record-redis
     spec:
       containers:
-        - name: $title$
-          image: $nginx$
+        - name: webook-record-redis
+          image: redis:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: $80$
-              protocol: $TCP$
+            - containerPort: 6379
       restartPolicy: Always
-      $END$
+      

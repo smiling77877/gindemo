@@ -1,17 +1,13 @@
 apiVersion: v1
-kind: Pod
+kind: PersistentVolume
 metadata:
-  name: $title$
-  labels:
-    role: $title$
+  name: webook-mysql-pvc
 spec:
-  containers:
-    - name: $title$
-      image: $nginx$
-      imagePullPolicy: IfNotPresent
-      ports:
-        - name: $title$
-          containerPort: $80$
-          protocol: $TCP$
-  restartPolicy: Always
-  $END$
+  storageClassName: record
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+  
