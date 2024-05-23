@@ -111,7 +111,7 @@ func (c *UserHandler) Login(ctx *gin.Context) {
 		sess.Set("userId", u.Id)
 		sess.Options(sessions.Options{
 			// 十五分钟
-			MaxAge: 30,
+			MaxAge: 3000,
 		})
 		err = sess.Save()
 		if err != nil {
@@ -163,11 +163,66 @@ func (c *UserHandler) LoginJWT(ctx *gin.Context) {
 }
 
 func (c *UserHandler) Edit(ctx *gin.Context) {
-
+	// 嵌入一段刷新过期时间的代码
+	type Req struct {
+		// 改邮箱，密码，或者能不能改手机号
+		Nickname string `json:"nickname"`
+		Birthday string `json:"birthday"`
+		AboutMe  string `json:"aboutMe"`
+	}
+	var req Req
+	if err := ctx.Bind(&req); err != nil {
+		return
+	}
+	//sess := sessions.Default(ctx)
+	//sess.Get("uid")
+	uc, ok := ctx.MustGet("user").(UserClaims)
+	if !ok {
+		ctx.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+	// 用户输入不对
+	birthday, err := time.Parse(time.DateOnly, req.Birthday)
+	if err != nil {
+		ctx.String(http.StatusOK, "生日格式不对")
+		return
+	}
+	err = c.svc.UpdateNonSensitiveInfo(ctx, domain.User{
+		Id:       uc.Uid,
+		Nickname: req.Nickname,
+		Birthday: birthday,
+		AboutMe:  req.AboutMe,
+	})
+	if err != nil {
+		ctx.String(http.StatusOK, "系统异常")
+	}
+	ctx.String(http.StatusOK, "更新成功")
 }
 
 func (c *UserHandler) Profile(ctx *gin.Context) {
-	ctx.String(http.StatusOK, "这是 profile")
+	//ctx.String(http.StatusOK, "这是 profile")
+	uc, ok := ctx.MustGet("user").(UserClaims)
+	if !ok {
+		ctx.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+	u, err := c.svc.FindById(ctx, uc.Uid)
+	if err != nil {
+		ctx.String(http.StatusOK, "系统异常")
+		return
+	}
+	type User struct {
+		Nickname string `json:"nickname"`
+		Email    string `json:"email"`
+		AboutMe  string `json:"aboutMe"`
+		Birthday string `json:"birthday"`
+	}
+	ctx.JSON(http.StatusOK, User{
+		Nickname: u.Nickname,
+		Email:    u.Email,
+		AboutMe:  u.AboutMe,
+		Birthday: u.Birthday.Format(time.DateOnly),
+	})
 }
 
 var JWTKey = []byte("sL0hO7kV4cT1aW1zN2gN7qG7jU1jL1iK")

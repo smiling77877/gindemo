@@ -1,10 +1,18 @@
 package domain
 
-import "time"
+import (
+	"time"
+)
 
 type User struct {
 	Id       int64
 	Email    string
 	Password string
-	Ctime    time.Time
+
+	Nickname string
+	// YYYY-MM-DD
+	Birthday time.Time
+	AboutMe  string
+
+	Ctime time.Time
 }

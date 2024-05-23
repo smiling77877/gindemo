@@ -1,6 +1,7 @@
 package main
 
 import (
+	"gindemo/webbook/config"
 	"gindemo/webbook/internal/repository"
 	"gindemo/webbook/internal/repository/dao"
 	"gindemo/webbook/internal/service"
@@ -22,6 +23,10 @@ func main() {
 	db := initDB()
 	server := initWebServer()
 	initUserHdl(db, server)
+	//server := gin.Default()
+	//server.GET("/hello", func(ctx *gin.Context) {
+	//	ctx.String(http.StatusOK, "hello, 启动成功了！")
+	//})
 	server.Run(":8080")
 }
 
@@ -34,7 +39,7 @@ func initUserHdl(db *gorm.DB, server *gin.Engine) {
 }
 
 func initDB() *gorm.DB {
-	db, err := gorm.Open(mysql.Open("root:root@tcp(localhost:13316)/webook"))
+	db, err := gorm.Open(mysql.Open(config.Config.DB.DSN))
 	if err != nil {
 		// 只在初始化过程中panic
 		panic(err)
@@ -61,11 +66,11 @@ func initWebServer() *gin.Engine {
 	}))
 
 	redisClient := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379",
+		Addr: config.Config.Redis.Addr,
 	})
 
 	server.Use(ratelimit.NewBuilder(redisClient, time.Second, 1).Build())
-	
+
 	useJWT(server)
 	// useSession(server)
 	return server

@@ -45,10 +45,34 @@ func (dao *UserDAO) FindByEmail(ctx context.Context, email string) (User, error)
 	return u, err
 }
 
+func (dao *UserDAO) UpdateById(ctx context.Context, entity User) error {
+	// 这种写法依赖于GORM的零值和主键更新特性
+	// Update 非零值 WHERE id = ?
+	// return dao.db.
+	return dao.db.WithContext(ctx).Model(&entity).Where("id = ?",
+		entity.Id).Updates(map[string]any{
+		"utime":    time.Now().UnixMilli(),
+		"nickname": entity.Nickname,
+		"birthday": entity.Birthday,
+		"about_me": entity.AboutMe,
+	}).Error
+}
+
+func (dao *UserDAO) FindById(ctx context.Context, uid int64) (User, error) {
+	var res User
+	err := dao.db.WithContext(ctx).Where("id = ?", uid).First(&res).Error
+	return res, err
+}
+
 type User struct {
 	Id       int64  `gorm:"primaryKey, autoIncrement"`
 	Email    string `gorm:"unique"`
 	Password string
+
+	Nickname string `gorm:"type=varchar(128)"`
+	// YYYY-MM-DD
+	Birthday int64
+	AboutMe  string `gorm:"type=varchar(4096)"`
 
 	// 创建时间，毫秒数
 	Ctime int64

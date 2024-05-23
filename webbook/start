@@ -1,0 +1,5 @@
+$env:CGO_ENABLED="0"
+$env:GOOS="linux"
+$env:GOARCH="amd64"
+go build -tags=k8s -o webook .
+docker build -t smiling77877/webook:v0.0.1 .
