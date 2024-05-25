@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	ErrDuplicateEmail        = repository.ErrDuplicateEmail
+	ErrDuplicateEmail        = repository.ErrDuplicateUser
 	ErrInvalidUserOrPassword = errors.New("用户不存在或者密码不对")
 )
 
@@ -55,4 +55,27 @@ func (svc *UserService) UpdateNonSensitiveInfo(
 
 func (svc *UserService) FindById(ctx context.Context, uid int64) (domain.User, error) {
 	return svc.repo.FindById(ctx, uid)
+}
+
+func (svc *UserService) FindOrCreate(ctx context.Context, phone string) (domain.User, error) {
+	// 先找一下，我们认为大部分用户是已经存在的用户
+	u, err := svc.repo.FindByPhone(ctx, phone)
+	if err != repository.ErrUserNotFound {
+		// 有两种情况
+		// err == nil, u是可用的
+		// err != nil, 系统错误
+		return u, err
+	}
+	// 用户没找到
+	err = svc.repo.Create(ctx, domain.User{
+		Phone: phone,
+	})
+	// 有两种可能，一种是err恰好是唯一索引冲突(phone)
+	// 一种是 err != nil, 系统错误
+	if err != nil && err != repository.ErrDuplicateUser {
+		return domain.User{}, nil
+	}
+	// 要么 err == nil 要么 ErrDuplicateUser, 也代表用户存在
+	// 主从延迟，从理论上讲，强制走主库
+	return svc.repo.FindByPhone(ctx, phone)
 }
