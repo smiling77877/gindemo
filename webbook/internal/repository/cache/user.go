@@ -11,12 +11,17 @@ import (
 
 var ErrKeyNotExist = redis.Nil
 
-type UserCache struct {
+type UserCache interface {
+	Get(ctx context.Context, uid int64) (domain.User, error)
+	Set(ctx context.Context, du domain.User) error
+}
+
+type RedisUserCache struct {
 	cmd        redis.Cmdable
 	expiration time.Duration
 }
 
-func (c *UserCache) Get(ctx context.Context, uid int64) (domain.User, error) {
+func (c *RedisUserCache) Get(ctx context.Context, uid int64) (domain.User, error) {
 	key := c.key(uid)
 	// 暂时用JSON
 	data, err := c.cmd.Get(ctx, key).Result()
@@ -31,7 +36,7 @@ func (c *UserCache) Get(ctx context.Context, uid int64) (domain.User, error) {
 	return u, err
 }
 
-func (c *UserCache) Set(ctx context.Context, du domain.User) error {
+func (c *RedisUserCache) Set(ctx context.Context, du domain.User) error {
 	key := c.key(du.Id)
 	// 暂时用JSON
 	data, err := json.Marshal(du)
@@ -41,7 +46,7 @@ func (c *UserCache) Set(ctx context.Context, du domain.User) error {
 	return c.cmd.Set(ctx, key, data, c.expiration).Err()
 }
 
-func (c *UserCache) key(uid int64) string {
+func (c *RedisUserCache) key(uid int64) string {
 	return fmt.Sprintf("user:info:%d", uid)
 }
 
@@ -49,8 +54,8 @@ type UserCacheV1 struct {
 	client *redis.Client
 }
 
-func NewUserCache(cmd redis.Cmdable) *UserCache {
-	return &UserCache{
+func NewUserCache(cmd redis.Cmdable) UserCache {
+	return &RedisUserCache{
 		cmd:        cmd,
 		expiration: time.Minute * 15,
 	}
