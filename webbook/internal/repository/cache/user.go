@@ -12,6 +12,7 @@ import (
 var ErrKeyNotExist = redis.Nil
 
 type UserCache interface {
+	Delete(ctx context.Context, id int64) error
 	Get(ctx context.Context, uid int64) (domain.User, error)
 	Set(ctx context.Context, du domain.User) error
 }
@@ -19,6 +20,10 @@ type UserCache interface {
 type RedisUserCache struct {
 	cmd        redis.Cmdable
 	expiration time.Duration
+}
+
+func (c *RedisUserCache) Delete(ctx context.Context, id int64) error {
+	return c.cmd.Del(ctx, c.key(id)).Err()
 }
 
 func (c *RedisUserCache) Get(ctx context.Context, uid int64) (domain.User, error) {

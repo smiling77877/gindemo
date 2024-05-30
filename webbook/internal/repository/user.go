@@ -18,7 +18,7 @@ var (
 type UserRepository interface {
 	Create(ctx context.Context, u domain.User) error
 	FindByEmail(ctx context.Context, email string) (domain.User, error)
-	UpdateNonZeroFields(ctx context.Context, user domain.User) error
+	Update(ctx context.Context, user domain.User) error
 	FindByPhone(ctx context.Context, phone string) (domain.User, error)
 	FindById(ctx context.Context, uid int64) (domain.User, error)
 }
@@ -64,6 +64,7 @@ func (repo *CachedUserRepository) toDomain(u dao.User) domain.User {
 		AboutMe:  u.AboutMe,
 		Nickname: u.Nickname,
 		Birthday: time.UnixMilli(u.Birthday),
+		Ctime:    time.UnixMilli(u.Ctime),
 	}
 }
 
@@ -85,7 +86,7 @@ func (repo *CachedUserRepository) toEntity(u domain.User) dao.User {
 	}
 }
 
-func (repo *CachedUserRepository) UpdateNonZeroFields(
+func (repo *CachedUserRepository) Update(
 	ctx context.Context, user domain.User) error {
 	return repo.dao.UpdateById(ctx, repo.toEntity(user))
 }

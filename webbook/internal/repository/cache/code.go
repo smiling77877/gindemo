@@ -34,7 +34,7 @@ func NewCodeCache(cmd redis.Cmdable) CodeCache {
 }
 
 func (c *RedisCodeCache) Set(ctx context.Context, biz, phone, code string) error {
-	res, err := c.cmd.Eval(ctx, luaSetCode, []string{biz, phone}, code).Int()
+	res, err := c.cmd.Eval(ctx, luaSetCode, []string{c.key(biz, phone)}, code).Int()
 	if err != nil {
 		// 调用redis出了问题
 		return err
@@ -50,7 +50,7 @@ func (c *RedisCodeCache) Set(ctx context.Context, biz, phone, code string) error
 }
 
 func (c *RedisCodeCache) Verify(ctx context.Context, biz, phone, code string) (bool, error) {
-	res, err := c.cmd.Eval(ctx, luaVerifyCode, []string{biz, phone}, code).Int()
+	res, err := c.cmd.Eval(ctx, luaVerifyCode, []string{c.key(biz, phone)}, code).Int()
 	if err != nil {
 		// 调用redis出了问题
 		return false, err
