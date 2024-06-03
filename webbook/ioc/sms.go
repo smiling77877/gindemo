@@ -4,13 +4,14 @@ import (
 	"gindemo/webbook/internal/service/sms"
 	"gindemo/webbook/internal/service/sms/localsms"
 	"gindemo/webbook/internal/service/sms/tencent"
+	"github.com/redis/go-redis/v9"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
 	tencentSMS "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms/v20210111"
 	"os"
 )
 
-func InitSMSService() sms.Service {
+func InitSMSService(cmd redis.Cmdable) sms.Service {
 	return localsms.NewService()
 	//return initTencentSMSService()
 }

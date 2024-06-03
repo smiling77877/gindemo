@@ -18,3 +18,9 @@ type User struct {
 
 	Ctime time.Time
 }
+
+// TodayIsBirthday 判定今天是不是我的生日
+func (u User) TodayIsBirthday() bool {
+	now := time.Now()
+	return now.Month() == u.Birthday.Month() && now.Day() == u.Birthday.Day()
+}
