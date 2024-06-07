@@ -17,6 +17,8 @@ type User struct {
 	Phone string
 
 	Ctime time.Time
+
+	WechatInfo WechatInfo
 }
 
 // TodayIsBirthday 判定今天是不是我的生日

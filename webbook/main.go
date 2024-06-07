@@ -1,95 +1,118 @@
 package main
 
+import (
+	"bytes"
+	"github.com/fsnotify/fsnotify"
+	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
+	_ "github.com/spf13/viper/remote"
+	"log"
+)
+
 func main() {
-	//db := initDB()
-	//
-	//redisClient := redis.NewClient(&redis.Options{
-	//	Addr: config.Config.Redis.Addr,
-	//})
+	initViperRemote()
+	//initViperV1()
+
 	server := InitWebServer()
-	//codeSvc := initCodeSvc(redisClient)
-	//initUserHdl(db, redisClient, codeSvc, server)
-	//server := gin.Default()
 	//server.GET("/hello", func(ctx *gin.Context) {
 	//	ctx.String(http.StatusOK, "hello, 启动成功了！")
 	//})
 	server.Run(":8080")
 }
 
-//func initUserHdl(db *gorm.DB, redisClient redis.Cmdable, codeSvc *service.CodeService, server *gin.Engine) {
-//	ud := dao.NewUserDAO(db)
-//	uc := cache.NewUserCache(redisClient)
-//	ur := repository.NewUserRepository(ud, uc)
-//	us := service.NewUserService(ur)
-//	hdl := web.NewUserHandler(us, codeSvc)
-//	hdl.RegisterRoutes(server)
-//}
+func initViper() {
+	viper.SetConfigName("dev")
+	viper.SetConfigType("yaml")
+	// 当前工作目录的 config 子目录
+	viper.AddConfigPath("config")
+	// 读取配置
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
+	val := viper.Get("test.key")
+	log.Println(val)
+}
 
-//func initCodeSvc(redisClient *redis.Client) *service.CodeService {
-//	cc := cache.NewCodeCache(redisClient)
-//	crepo := repository.NewCodeRepository(cc)
-//	return service.NewCodeService(crepo, initMemorySms())
-//}
+func initViperWatch() {
+	cfile := pflag.String("config",
+		"config/config.yaml", "配置文件路径")
+	// 这一步之后, cfile 里面才有值
+	pflag.Parse()
+	// 所有的默认值放好
+	viper.SetConfigType("yaml")
+	viper.SetConfigFile(*cfile)
+	viper.WatchConfig()
+	viper.OnConfigChange(func(in fsnotify.Event) {
+		log.Println(viper.GetString("test.key"))
+	})
+	// 读取配置
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
+	val := viper.Get("test.key")
+	log.Println(val)
+}
 
-//func initMemorySms() sms.Service {
-//	return localsms.NewService()
-//}
+func initViperV1() {
+	cfile := pflag.String("config", "config/config.yaml", "配置文件路径")
+	// 这一步之后, cfile 里面才有值
+	pflag.Parse()
+	// 所有的默认值放好
+	viper.SetConfigType("yaml")
+	viper.SetConfigFile(*cfile)
+	// 读取配置
+	err := viper.ReadInConfig()
+	if err != nil {
+		panic(err)
+	}
+	val := viper.Get("test.key")
+	log.Println(val)
+}
 
-//func initDB() *gorm.DB {
-//	db, err := gorm.Open(mysql.Open(config.Config.DB.DSN))
-//	if err != nil {
-//		// 只在初始化过程中panic
-//		panic(err)
-//	}
-//
-//	err = dao.InitTable(db)
-//	if err != nil {
-//		panic(err)
-//	}
-//	return db
-//}
+func initViperV2() {
+	cfg := `
+test:
+	key: value1
 
-//func initWebServer() *gin.Engine {
-//	server := gin.Default()
-//
-//	//server.Use(cors.New(cors.Config{
-//	//	AllowCredentials: true,
-//	//	AllowHeaders:     []string{"Content-Type", "Authorization"},
-//	//	ExposeHeaders:    []string{"x-jwt-token"},
-//	//	AllowOriginFunc: func(origin string) bool {
-//	//		return strings.HasPrefix(origin, "http://localhost")
-//	//	},
-//	//	MaxAge: 12 * time.Hour,
-//	//}))
-//	//
-//	//redisClient := redis.NewClient(&redis.Options{
-//	//	Addr: config.Config.Redis.Addr,
-//	//})
-//	//
-//	//server.Use(ratelimit.NewBuilder(redisClient, time.Second, 1).Build())
-//	//
-//	useJWT(server)
-//	// useSession(server)
-//	return server
-//}
+redis:
+	addr: "localhost:6379"
 
-//func useJWT(server *gin.Engine) {
-//	login := middleware.LoginJWTMiddlewareBuilder{}
-//	server.Use(login.CheckLogin())
-//}
-//
-//func useSession(server *gin.Engine) {
-//	login := &middleware.LoginMiddlewareBuilder{}
-//
-//	// 存储数据的，也就是你 userId 存哪里
-//	// 直接存 cookie
-//	store := cookie.NewStore([]byte("secret"))
-//	//store, err := redis.NewStore(16, "tcp", "localhost:6379", "",
-//	//	[]byte("kZ3cV0sR2aL5xX6yA8tR5wD7rF6lW1gU"),
-//	//	[]byte("pO5bK9qT4fJ0xK5nR0aA1wY2cK3yN1dG"))
-//	//if err != nil {
-//	//	panic(err)
-//	//}
-//
-//	server.Use(sessions.Sessions("ssid", store), login.CheckLogin())
-//}
+db:
+	dsn: "root:root@tcp(local:13306)/webook"
+`
+	viper.SetConfigType("yaml")
+	err := viper.ReadConfig(bytes.NewReader([]byte(cfg)))
+	if err != nil {
+		panic(err)
+	}
+}
+
+func initViperRemote() {
+	err := viper.AddRemoteProvider("etcd3",
+		"http://127.0.0.1:12379", "/webbook")
+	if err != nil {
+		panic(err)
+	}
+	viper.SetConfigType("yaml")
+	viper.OnConfigChange(func(in fsnotify.Event) {
+		log.Println("远程配置中心发生变更")
+	})
+	go func() {
+		for {
+			err = viper.WatchRemoteConfig()
+			if err != nil {
+				panic(err)
+			}
+			log.Println("watch", viper.GetString("test.key"))
+			// time.Sleep(time.Second)
+		}
+	}()
+	err = viper.ReadRemoteConfig()
+	if err != nil {
+		panic(err)
+	}
+	val := viper.Get("test.key")
+	log.Println(val)
+}
