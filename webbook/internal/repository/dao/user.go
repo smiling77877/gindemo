@@ -98,7 +98,7 @@ type User struct {
 	Birthday int64
 	AboutMe  string `gorm:"type=varchar(4096)"`
 
-	Phone sql.NullString
+	Phone sql.NullString `gorm:"unique"`
 
 	// 1 如果查询要求同时使用 openid 和 unionid, 就要创建联合唯一索引
 	// 2 如果查询只用 openid, 那么就在 openid 上创建唯一索引, 或者 <openid, unionid> 联合索引
