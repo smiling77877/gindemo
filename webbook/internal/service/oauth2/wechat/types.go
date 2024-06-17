@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"gindemo/webbook/internal/domain"
+	"gindemo/webbook/pkg/logger"
 	"net/http"
 	"net/url"
 )
@@ -20,9 +21,10 @@ type service struct {
 	appID     string
 	appSecret string
 	client    *http.Client
+	l         logger.LoggerV1
 }
 
-func NewService(appID, appSecret string) Service {
+func NewService(appID, appSecret string, l logger.LoggerV1) Service {
 	return &service{
 		appID:     appID,
 		appSecret: appSecret,

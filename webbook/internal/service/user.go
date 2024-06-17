@@ -5,6 +5,7 @@ import (
 	"errors"
 	"gindemo/webbook/internal/domain"
 	"gindemo/webbook/internal/repository"
+	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -24,11 +25,13 @@ type UserService interface {
 
 type userService struct {
 	repo repository.UserRepository
+	//logger *zap.Logger
 }
 
 func NewUserService(repo repository.UserRepository) UserService {
 	return &userService{
 		repo: repo,
+		//logger: zap.L(),
 	}
 }
 
@@ -94,6 +97,11 @@ func (svc *userService) FindOrCreateByWechat(ctx context.Context, wechatInfo dom
 	if err != repository.ErrUserNotFound {
 		return u, err
 	}
+	// 这边就是意味着是一个新的用户
+	// JSON格式的wechatInfo
+	zap.L().Info("新用户", zap.Any("wechatInfo", wechatInfo))
+	//svc.logger.Info("新用户", zap.Any("wechatInfo", wechatInfo))
+
 	err = svc.repo.Create(ctx, domain.User{
 		WechatInfo: wechatInfo,
 	})
