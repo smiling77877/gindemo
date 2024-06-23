@@ -18,7 +18,7 @@ var (
 type UserRepository interface {
 	Create(ctx context.Context, u domain.User) error
 	FindByEmail(ctx context.Context, email string) (domain.User, error)
-	Update(ctx context.Context, user domain.User) error
+	UpdateNoneZeroFields(ctx context.Context, user domain.User) error
 	FindByPhone(ctx context.Context, phone string) (domain.User, error)
 	FindById(ctx context.Context, uid int64) (domain.User, error)
 	FindByWechat(ctx context.Context, openId string) (domain.User, error)
@@ -107,16 +107,25 @@ func (repo *CachedUserRepository) toEntity(u domain.User) dao.User {
 	}
 }
 
-func (repo *CachedUserRepository) Update(
+func (repo *CachedUserRepository) UpdateNoneZeroFields(
 	ctx context.Context, user domain.User) error {
-	return repo.dao.UpdateById(ctx, repo.toEntity(user))
+	// 更新DB之后，删除
+	err := repo.dao.UpdateById(ctx, repo.toEntity(user))
+	if err != nil {
+		return err
+	}
+	// 延迟一秒
+	time.AfterFunc(time.Second, func() {
+		_ = repo.cache.Del(ctx, user.Id)
+	})
+	return repo.cache.Del(ctx, user.Id)
 }
 
 func (repo *CachedUserRepository) FindById(ctx context.Context, uid int64) (domain.User, error) {
 	du, err := repo.cache.Get(ctx, uid)
 	// 只要err为nil，就返回
 	if err == nil {
-		return du, err
+		return du, nil
 	}
 
 	// err不为nil，就要查询数据库

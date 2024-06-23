@@ -62,7 +62,7 @@ func (svc *userService) Login(ctx context.Context, email, password string) (doma
 
 func (svc *userService) UpdateNonSensitiveInfo(
 	ctx context.Context, user domain.User) error {
-	return svc.repo.Update(ctx, user)
+	return svc.repo.UpdateNoneZeroFields(ctx, user)
 }
 
 func (svc *userService) FindById(ctx context.Context, uid int64) (domain.User, error) {
