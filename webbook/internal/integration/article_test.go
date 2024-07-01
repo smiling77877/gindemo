@@ -61,6 +61,7 @@ func (s *ArticleHandlerSuite) TestArticle_Publish() {
 				assert.Equal(t, "hello, 你好", art.Title)
 				assert.Equal(t, "随便试试", art.Content)
 				assert.Equal(t, int64(123), art.AuthorId)
+				assert.Equal(t, uint8(2), art.Status)
 				assert.True(t, art.Ctime > 0)
 				assert.True(t, art.Utime > 0)
 				var publishedArt dao.PublishedArticle
@@ -68,6 +69,7 @@ func (s *ArticleHandlerSuite) TestArticle_Publish() {
 				assert.Equal(t, "hello, 你好", publishedArt.Title)
 				assert.Equal(t, "随便试试", publishedArt.Content)
 				assert.Equal(t, int64(123), publishedArt.AuthorId)
+				assert.Equal(t, uint8(2), publishedArt.Status)
 				assert.True(t, publishedArt.Ctime > 0)
 				assert.True(t, publishedArt.Utime > 0)
 			},
@@ -90,6 +92,7 @@ func (s *ArticleHandlerSuite) TestArticle_Publish() {
 					Title:    "我的标题",
 					Content:  "我的内容",
 					Ctime:    456,
+					Status:   1,
 					Utime:    234,
 					AuthorId: 123,
 				})
@@ -100,6 +103,7 @@ func (s *ArticleHandlerSuite) TestArticle_Publish() {
 				s.db.Where("id = ?", 2).First(&art)
 				assert.Equal(t, "新的标题", art.Title)
 				assert.Equal(t, "新的内容", art.Content)
+				assert.Equal(t, uint8(2), art.Status)
 				assert.Equal(t, int64(123), art.AuthorId)
 				// 创建时间没变
 				assert.Equal(t, int64(456), art.Ctime)
@@ -111,6 +115,7 @@ func (s *ArticleHandlerSuite) TestArticle_Publish() {
 				assert.Equal(t, "新的内容", publishedArt.Content)
 				assert.Equal(t, int64(123), publishedArt.AuthorId)
 				assert.True(t, publishedArt.Ctime > 0)
+				assert.Equal(t, uint8(2), publishedArt.Status)
 				assert.True(t, publishedArt.Utime > 0)
 			},
 			req: Article{
@@ -131,6 +136,7 @@ func (s *ArticleHandlerSuite) TestArticle_Publish() {
 					Title:    "我的标题",
 					Content:  "我的内容",
 					Ctime:    456,
+					Status:   1,
 					Utime:    234,
 					AuthorId: 123,
 				}
@@ -144,6 +150,7 @@ func (s *ArticleHandlerSuite) TestArticle_Publish() {
 				assert.Equal(t, "新的标题", art.Title)
 				assert.Equal(t, "新的内容", art.Content)
 				assert.Equal(t, int64(123), art.AuthorId)
+				assert.Equal(t, uint8(2), art.Status)
 				assert.Equal(t, int64(456), art.Ctime)
 				assert.True(t, art.Utime > 234)
 
@@ -152,6 +159,7 @@ func (s *ArticleHandlerSuite) TestArticle_Publish() {
 				assert.Equal(t, "新的标题", part.Title)
 				assert.Equal(t, "新的内容", part.Content)
 				assert.Equal(t, int64(123), part.AuthorId)
+				assert.Equal(t, uint8(2), part.Status)
 				assert.Equal(t, int64(456), part.Ctime)
 				assert.True(t, part.Utime > 234)
 			},
@@ -174,6 +182,7 @@ func (s *ArticleHandlerSuite) TestArticle_Publish() {
 					Content: "我的内容",
 					Ctime:   456,
 					Utime:   234,
+					Status:  1,
 					// 设置成另外一个人的ID
 					AuthorId: 789,
 				}
@@ -183,6 +192,7 @@ func (s *ArticleHandlerSuite) TestArticle_Publish() {
 					Title:   "我的标题",
 					Content: "我的内容",
 					Ctime:   456,
+					Status:  2,
 					Utime:   234,
 					// 设置成另外一个人的ID
 					AuthorId: 789,
@@ -196,6 +206,7 @@ func (s *ArticleHandlerSuite) TestArticle_Publish() {
 				assert.Equal(t, "我的内容", art.Content)
 				assert.Equal(t, int64(456), art.Ctime)
 				assert.Equal(t, int64(234), art.Utime)
+				assert.Equal(t, uint8(1), art.Status)
 				assert.Equal(t, int64(789), art.AuthorId)
 
 				var part dao.PublishedArticle
@@ -204,6 +215,7 @@ func (s *ArticleHandlerSuite) TestArticle_Publish() {
 				assert.Equal(t, "我的标题", part.Title)
 				assert.Equal(t, "我的内容", part.Content)
 				assert.Equal(t, int64(789), part.AuthorId)
+				assert.Equal(t, uint8(2), part.Status)
 				// 创建时间没变
 				assert.Equal(t, int64(456), part.Ctime)
 				assert.Equal(t, int64(234), part.Utime)
@@ -250,13 +262,6 @@ func (s *ArticleHandlerSuite) TestArticle_Publish() {
 	}
 }
 
-func (s *ArticleHandlerSuite) TearDownTest() {
-	err := s.db.Exec("truncate table `articles`").Error
-	assert.NoError(s.T(), err)
-	err = s.db.Exec("truncate table `published_articles`").Error
-	assert.NoError(s.T(), err)
-}
-
 func (s *ArticleHandlerSuite) TestEdit() {
 	t := s.T()
 
@@ -281,10 +286,15 @@ func (s *ArticleHandlerSuite) TestEdit() {
 				assert.NoError(t, err)
 				assert.True(t, art.Ctime > 0)
 				assert.True(t, art.Utime > 0)
-				assert.True(t, art.Id > 0)
-				assert.Equal(t, "我的标题", art.Title)
-				assert.Equal(t, "我的内容", art.Content)
-				assert.Equal(t, int64(123), art.AuthorId)
+				art.Ctime = 0
+				art.Utime = 0
+				assert.Equal(t, dao.Article{
+					Id:       1,
+					Title:    "我的标题",
+					Content:  "我的内容",
+					AuthorId: 123,
+					Status:   1,
+				}, art)
 			},
 			art: Article{
 				Title:   "我的标题",
@@ -304,8 +314,10 @@ func (s *ArticleHandlerSuite) TestEdit() {
 					Title:    "我的标题",
 					Content:  "我的内容",
 					AuthorId: 123,
-					Ctime:    456,
-					Utime:    789,
+					// 假设这是一个已经发表了的帖子
+					Status: 2,
+					Ctime:  456,
+					Utime:  789,
 				}).Error
 				assert.NoError(t, err)
 			},
@@ -321,7 +333,9 @@ func (s *ArticleHandlerSuite) TestEdit() {
 					Title:    "新的标题",
 					Content:  "新的内容",
 					AuthorId: 123,
-					Ctime:    456,
+					// 更新之后，是未发表状态
+					Status: 1,
+					Ctime:  456,
 				}, art)
 			},
 			art: Article{
@@ -343,6 +357,7 @@ func (s *ArticleHandlerSuite) TestEdit() {
 					Content: "我的内容",
 					// 模拟别人
 					AuthorId: 1024,
+					Status:   2,
 					Ctime:    456,
 					Utime:    789,
 				}).Error
@@ -357,6 +372,7 @@ func (s *ArticleHandlerSuite) TestEdit() {
 					Title:    "我的标题",
 					Content:  "我的内容",
 					AuthorId: 1024,
+					Status:   2,
 					Ctime:    456,
 					Utime:    789,
 				}, art)
@@ -399,6 +415,13 @@ func (s *ArticleHandlerSuite) TestEdit() {
 			assert.Equal(t, tc.wantRes, res)
 		})
 	}
+}
+
+func (s *ArticleHandlerSuite) TearDownTest() {
+	err := s.db.Exec("truncate table `articles`").Error
+	assert.NoError(s.T(), err)
+	err = s.db.Exec("truncate table `published_articles`").Error
+	assert.NoError(s.T(), err)
 }
 
 func TestArticleHandler(t *testing.T) {
