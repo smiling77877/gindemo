@@ -8,11 +8,14 @@ import (
 	"gindemo/webbook/pkg/logger"
 )
 
+//go:generate mockgen -source=./article.go -package=svcmocks -destination=./mocks/article.mock.go ArticleService
 type ArticleService interface {
 	Save(ctx context.Context, art domain.Article) (int64, error)
 	Publish(ctx context.Context, art domain.Article) (int64, error)
 	Withdraw(ctx context.Context, uid int64, id int64) error
 	GetByAuthor(ctx context.Context, uid int64, offset, limit int) ([]domain.Article, error)
+	GetByID(ctx context.Context, id int64) (domain.Article, error)
+	GetPubById(ctx context.Context, id int64) (domain.Article, error)
 }
 
 type articleService struct {
@@ -22,6 +25,14 @@ type articleService struct {
 	readerRepo repository.ArticleReaderRepository
 	authorRepo repository.ArticleAuthorRepository
 	l          logger.LoggerV1
+}
+
+func (a *articleService) GetPubById(ctx context.Context, id int64) (domain.Article, error) {
+	return a.repo.GetPubById(ctx, id)
+}
+
+func (a *articleService) GetByID(ctx context.Context, id int64) (domain.Article, error) {
+	return a.repo.GetById(ctx, id)
 }
 
 func (a *articleService) GetByAuthor(ctx context.Context, uid int64, offset, limit int) ([]domain.Article, error) {
