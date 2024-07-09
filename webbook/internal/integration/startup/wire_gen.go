@@ -11,6 +11,8 @@ import (
 	"gindemo/webbook/internal/repository/cache"
 	"gindemo/webbook/internal/repository/dao"
 	"gindemo/webbook/internal/service"
+	"gindemo/webbook/internal/service/sms"
+	"gindemo/webbook/internal/service/sms/async"
 	"gindemo/webbook/internal/web"
 	"gindemo/webbook/internal/web/jwt"
 	"gindemo/webbook/ioc"
@@ -44,6 +46,15 @@ func InitWebServer() *gin.Engine {
 	oAuth2WechatHandler := web.NewOAuth2WechatHandler(wechatService, handler, userService)
 	engine := ioc.InitWebServer(v, userHandler, articleHandler, oAuth2WechatHandler)
 	return engine
+}
+
+func InitAsyncSmsService(svc sms.Service) *async.Service {
+	db := InitDB()
+	asyncSMSDAO := dao.NewGORMAsyncSmsDAO(db)
+	asyncSmsRepository := repository.NewAsyncSmsRepository(asyncSMSDAO)
+	loggerV1 := InitLogger()
+	asyncService := async.NewService(svc, asyncSmsRepository, loggerV1)
+	return asyncService
 }
 
 func InitArticleHandler(dao2 dao.ArticleDAO) *web.ArticleHandler {

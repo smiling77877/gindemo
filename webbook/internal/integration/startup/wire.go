@@ -8,6 +8,7 @@ import (
 	"gindemo/webbook/internal/repository/dao"
 	"gindemo/webbook/internal/service"
 	"gindemo/webbook/internal/service/sms"
+	"gindemo/webbook/internal/service/sms/async"
 	"gindemo/webbook/internal/web"
 	ijwt "gindemo/webbook/internal/web/jwt"
 	"gindemo/webbook/ioc"
@@ -56,7 +57,9 @@ func InitWebServer() *gin.Engine {
 }
 
 func InitAsyncSmsService(svc sms.Service) *async.Service {
-	wire.Build(thirdPartySet, repository.)
+	wire.Build(thirdPartySet, repository.NewAsyncSmsRepository,
+		dao.NewGORMAsyncSmsDAO, async.NewService)
+	return &async.Service{}
 }
 
 func InitArticleHandler(dao dao.ArticleDAO) *web.ArticleHandler {
