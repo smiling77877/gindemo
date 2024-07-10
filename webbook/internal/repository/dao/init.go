@@ -10,7 +10,8 @@ import (
 )
 
 func InitTables(db *gorm.DB) error {
-	return db.AutoMigrate(&User{}, &Article{}, &PublishedArticle{}, &AsyncSMS{})
+	return db.AutoMigrate(&User{}, &Article{}, &PublishedArticle{}, &AsyncSMS{},
+		&Interactive{})
 }
 
 func InitCollection(mdb *mongo.Database) error {

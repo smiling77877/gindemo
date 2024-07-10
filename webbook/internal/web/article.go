@@ -1,6 +1,7 @@
 package web
 
 import (
+	"context"
 	"gindemo/webbook/internal/domain"
 	"gindemo/webbook/internal/service"
 	"gindemo/webbook/internal/web/jwt"
@@ -13,15 +14,19 @@ import (
 )
 
 type ArticleHandler struct {
-	svc service.ArticleService
-	l   logger.LoggerV1
+	svc     service.ArticleService
+	intrSvc service.InteractiveService
+	l       logger.LoggerV1
+	biz     string
 }
 
 func NewArticleHandler(l logger.LoggerV1,
-	svc service.ArticleService) *ArticleHandler {
+	svc service.ArticleService, intrSvc service.InteractiveService) *ArticleHandler {
 	return &ArticleHandler{
-		svc: svc,
-		l:   l,
+		svc:     svc,
+		l:       l,
+		intrSvc: intrSvc,
+		biz:     "article",
 	}
 }
 
@@ -243,6 +248,18 @@ func (h *ArticleHandler) PubDetail(ctx *gin.Context) {
 		h.l.Error("查询文章失败，系统错误", logger.Error(err))
 		return
 	}
+
+	go func() {
+		// 1. 如果你想摆脱原本主链路的超时控制，你就创建一个新的
+		// 2. 如果你不想，你就用ctx
+		newCtx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		er := h.intrSvc.IncrReadCnt(newCtx, h.biz, art.Id)
+		if er != nil {
+			h.l.Error("更新阅读数失败", logger.Int64("aid", art.Id),
+				logger.Error(err))
+		}
+	}()
 
 	ctx.JSON(http.StatusOK, Result{
 		Data: ArticleVo{
