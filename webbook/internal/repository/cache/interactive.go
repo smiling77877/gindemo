@@ -14,11 +14,13 @@ var (
 
 const fieldReadCnt = "read_cnt"
 const fieldLikeCnt = "like_cnt"
+const fieldCollectCnt = "collect_cnt"
 
 type InteractiveCache interface {
 	IncrReadCntIfPresent(ctx context.Context, biz string, bizId int64) error
 	IncrLikeCntIfPresent(ctx context.Context, biz string, id int64) error
 	DecrLikeCntIfPresent(ctx context.Context, biz string, id int64) error
+	IncrCollectCntIfPresent(ctx context.Context, biz string, id int64) error
 }
 
 type InteractiveRedisCache struct {
@@ -46,6 +48,11 @@ func (i *InteractiveRedisCache) IncrLikeCntIfPresent(ctx context.Context, biz st
 func (i *InteractiveRedisCache) DecrLikeCntIfPresent(ctx context.Context, biz string, id int64) error {
 	key := i.key(biz, id)
 	return i.client.Eval(ctx, luaIncrCnt, []string{key}, fieldLikeCnt, -1).Err()
+}
+
+func (i *InteractiveRedisCache) IncrCollectCntIfPresent(ctx context.Context, biz string, id int64) error {
+	key := i.key(biz, id)
+	return i.client.Eval(ctx, luaIncrCnt, []string{key}, fieldCollectCnt, 1).Err()
 }
 
 func (i *InteractiveRedisCache) key(biz string, bizId int64) string {

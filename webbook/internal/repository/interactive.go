@@ -10,6 +10,7 @@ type InteractiveRepository interface {
 	IncrReadCnt(ctx context.Context, biz string, bizId int64) error
 	IncrLike(ctx context.Context, biz string, id, uid int64) error
 	DecrLike(ctx context.Context, biz string, id, uid int64) error
+	AddCollectionItem(ctx context.Context, biz string, id, cid, uid int64) error
 }
 
 type CachedInteractiveRepository struct {
@@ -45,4 +46,17 @@ func (c *CachedInteractiveRepository) IncrReadCnt(ctx context.Context, biz strin
 	// 你要更新缓存了
 	// 部分失败问题 —— 数据不一致
 	return c.cache.IncrReadCntIfPresent(ctx, biz, bizId)
+}
+
+func (c *CachedInteractiveRepository) AddCollectionItem(ctx context.Context, biz string, id, cid, uid int64) error {
+	err := c.dao.InsertCollectionBiz(ctx, dao.UserCollectionBiz{
+		Biz:   biz,
+		BizId: id,
+		Cid:   cid,
+		Uid:   uid,
+	})
+	if err != nil {
+		return err
+	}
+	return c.cache.IncrCollectCntIfPresent(ctx, biz, id)
 }

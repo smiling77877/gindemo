@@ -47,6 +47,7 @@ func (h *ArticleHandler) RegisterRoutes(server *gin.Engine) {
 	pub.GET("/:id", h.PubDetail)
 	// 传入一个参数，true 就是点赞，false 就是不点赞
 	pub.POST("/like", h.Like)
+	pub.POST("/collect", h.Collect)
 }
 
 // Edit 接收 Article 输入, 返回一个 ID, 文章的 ID
@@ -308,6 +309,32 @@ func (h *ArticleHandler) Like(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, Result{
+		Msg: "OK",
+	})
+}
+
+func (h *ArticleHandler) Collect(ctx *gin.Context) {
+	type Req struct {
+		Id  int64 `json:"id"`
+		Cid int64 `json:"cid"`
+	}
+	var req Req
+	if err := ctx.Bind(&req); err != nil {
+		return
+	}
+	uc := ctx.MustGet("user").(jwt.UserClaims)
+
+	err := h.intrSvc.Collect(ctx, h.biz, req.Id, uc.Uid)
+	if err != nil {
+		ctx.JSON(http.StatusOK, Result{
+			Code: 5,
+			Msg:  "系统错误",
+		})
+		h.l.Error("收藏失败", logger.Error(err),
+			logger.Int64("uid", uc.Uid), logger.Int64("aid", req.Id))
+		return
+	}
+	ctx.JSON(http.StatusOK, Result{
 		Msg: "OK",
 	})
 }
