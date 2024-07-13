@@ -114,7 +114,7 @@ func (c *CachedInteractiveRepository) Collected(ctx context.Context, biz string,
 	}
 }
 
-func (c *CachedCodeRepository) toDomain(ie dao.Interactive) domain.Interactive {
+func (c *CachedInteractiveRepository) toDomain(ie dao.Interactive) domain.Interactive {
 	return domain.Interactive{
 		ReadCnt:    ie.ReadCnt,
 		LikeCnt:    ie.LikeCnt,
