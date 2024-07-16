@@ -3,11 +3,13 @@ package main
 import (
 	"bytes"
 	"github.com/fsnotify/fsnotify"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	_ "github.com/spf13/viper/remote"
 	"go.uber.org/zap"
 	"log"
+	"net/http"
 )
 
 func main() {
@@ -16,6 +18,7 @@ func main() {
 	initLogger()
 
 	app := InitWebServer()
+	initPrometheus()
 	for _, c := range app.consumers {
 		err := c.Start()
 		if err != nil {
@@ -27,6 +30,14 @@ func main() {
 	//	ctx.String(http.StatusOK, "hello, 启动成功了！")
 	//})
 	server.Run(":8080")
+}
+
+func initPrometheus() {
+	go func() {
+		// 专门给 prometheus 用的接口
+		http.Handle("/metrics", promhttp.Handler())
+		http.ListenAndServe(":8081", nil)
+	}()
 }
 
 func initLogger() {
@@ -73,7 +84,7 @@ func initViperWatch() {
 }
 
 func initViperV1() {
-	cfile := pflag.String("config", "config/config.yaml", "配置文件路径")
+	cfile := pflag.String("config", "config/dev.yaml", "配置文件路径")
 	// 这一步之后, cfile 里面才有值
 	pflag.Parse()
 	// 所有的默认值放好

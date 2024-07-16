@@ -16,4 +16,5 @@ func InitWechatService(l logger.LoggerV1) wechat.Service {
 		panic("找不到环境变量 WECHAT_APP_SECRET")
 	}
 	return wechat.NewService(appID, appSecret, l)
+	//return wechat.NewService("0", "0", l)
 }

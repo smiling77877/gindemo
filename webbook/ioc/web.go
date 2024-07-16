@@ -1,12 +1,10 @@
 package ioc
 
 import (
-	"context"
 	"gindemo/webbook/internal/web"
 	webook "gindemo/webbook/internal/web/jwt"
 	"gindemo/webbook/internal/web/middleware"
-	"gindemo/webbook/pkg/ginx/middleware/ratelimit"
-	"gindemo/webbook/pkg/limiter"
+	"gindemo/webbook/pkg/ginx/middleware/prometheus"
 	"gindemo/webbook/pkg/logger"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -28,6 +26,12 @@ func InitWebServer(mdls []gin.HandlerFunc,
 }
 
 func InitGinMiddlewares(redisClient redis.Cmdable, hdl webook.Handler, l logger.LoggerV1) []gin.HandlerFunc {
+	pb := &prometheus.Builder{
+		Namespace: "geektime_daming",
+		Subsystem: "webook",
+		Name:      "gin_http",
+		Help:      "统计 GIN 的HTTP接口数据",
+	}
 	return []gin.HandlerFunc{
 		cors.New(cors.Config{
 			AllowCredentials: true,
@@ -39,10 +43,12 @@ func InitGinMiddlewares(redisClient redis.Cmdable, hdl webook.Handler, l logger.
 			MaxAge: 12 * time.Hour,
 		}),
 		//ratelimit.NewBuilder(redisClient, time.Second, 1).Build(),
-		ratelimit.NewBuilder(limiter.NewRedisSlidingWindowLimiter(redisClient, time.Second, 1000)).Build(),
-		middleware.NewLogMiddlewareBuilder(func(ctx context.Context, al middleware.AccessLog) {
-			l.Debug("", logger.Field{Key: "req", Val: al})
-		}).AllowReqBody().AllowRespBody().Build(),
-		(middleware.NewLoginJWTMiddlewareBuilder(hdl)).CheckLogin(),
+		//ratelimit.NewBuilder(limiter.NewRedisSlidingWindowLimiter(redisClient, time.Second, 1000)).Build(),
+		//middleware.NewLogMiddlewareBuilder(func(ctx context.Context, al middleware.AccessLog) {
+		//	l.Debug("", logger.Field{Key: "req", Val: al})
+		//}).AllowReqBody().AllowRespBody().Build(),
+		pb.BuildRepsponseTime(),
+		pb.BuildActiveRequest(),
+		middleware.NewLoginJWTMiddlewareBuilder(hdl).CheckLogin(),
 	}
 }

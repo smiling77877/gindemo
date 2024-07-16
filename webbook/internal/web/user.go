@@ -2,6 +2,7 @@ package web
 
 import (
 	"gindemo/webbook/internal/domain"
+	"gindemo/webbook/internal/errs"
 	"gindemo/webbook/internal/service"
 	webook "gindemo/webbook/internal/web/jwt"
 	regexp "github.com/dlclark/regexp2"
@@ -189,7 +190,10 @@ func (c *UserHandler) Signup(ctx *gin.Context) {
 	case nil:
 		ctx.String(http.StatusOK, "注册成功")
 	case service.ErrDuplicateEmail:
-		ctx.String(http.StatusOK, "邮箱冲突，请换一个邮箱")
+		ctx.JSON(http.StatusOK, Result{
+			Code: errs.UserDuplicateEmail,
+			Msg:  "邮箱冲突",
+		})
 	default:
 		ctx.String(http.StatusOK, "系统错误")
 	}
