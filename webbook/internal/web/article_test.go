@@ -8,6 +8,7 @@ import (
 	"gindemo/webbook/internal/service"
 	svcmocks "gindemo/webbook/internal/service/mocks"
 	ijwt "gindemo/webbook/internal/web/jwt"
+	"gindemo/webbook/pkg/ginx"
 	"gindemo/webbook/pkg/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -20,16 +21,16 @@ import (
 func TestArticleHandler_Publish(t *testing.T) {
 	testCases := []struct {
 		name string
-		mock func(ctrl *gomock.Controller) service.ArticleService
+		mock func(ctrl *gomock.Controller) (service.ArticleService, service.InteractiveService)
 
 		reqBody  string
 		wantCode int
-		wantRes  Result
+		wantRes  ginx.Result
 	}{
 		{
 			name: "新建并且发表成功",
-			mock: func(ctrl *gomock.Controller) service.ArticleService {
-				svc := svcmocks.NewMockArticleService(ctrl)
+			mock: func(ctrl *gomock.Controller) (service.ArticleService, service.InteractiveService) {
+				svc, intr := svcmocks.NewMockArticleService(ctrl), svcmocks.NewMockInteractiveService(ctrl)
 				svc.EXPECT().Publish(gomock.Any(), domain.Article{
 					Title:   "我的标题",
 					Content: "我的内容",
@@ -37,7 +38,7 @@ func TestArticleHandler_Publish(t *testing.T) {
 						Id: 123,
 					},
 				}).Return(int64(1), nil)
-				return svc
+				return svc, intr
 			},
 			reqBody: `
 {
@@ -46,15 +47,15 @@ func TestArticleHandler_Publish(t *testing.T) {
 }
 `,
 			wantCode: http.StatusOK,
-			wantRes: Result{
+			wantRes: ginx.Result{
 				// 原本是 int64的，但是因为 Data 是any，所以在反序列化的时候用的 float64
 				Data: float64(1),
 			},
 		},
 		{
 			name: "修改并且发表成功",
-			mock: func(ctrl *gomock.Controller) service.ArticleService {
-				svc := svcmocks.NewMockArticleService(ctrl)
+			mock: func(ctrl *gomock.Controller) (service.ArticleService, service.InteractiveService) {
+				svc, intr := svcmocks.NewMockArticleService(ctrl), svcmocks.NewMockInteractiveService(ctrl)
 				svc.EXPECT().Publish(gomock.Any(), domain.Article{
 					Id:      1,
 					Title:   "新的标题",
@@ -63,7 +64,7 @@ func TestArticleHandler_Publish(t *testing.T) {
 						Id: 123,
 					},
 				}).Return(int64(1), nil)
-				return svc
+				return svc, intr
 			},
 			reqBody: `
 {
@@ -73,15 +74,15 @@ func TestArticleHandler_Publish(t *testing.T) {
 }
 `,
 			wantCode: http.StatusOK,
-			wantRes: Result{
+			wantRes: ginx.Result{
 				Data: float64(1),
 			},
 		},
 		{
 			name: "输入有误",
-			mock: func(ctrl *gomock.Controller) service.ArticleService {
-				svc := svcmocks.NewMockArticleService(ctrl)
-				return svc
+			mock: func(ctrl *gomock.Controller) (service.ArticleService, service.InteractiveService) {
+				svc, intr := svcmocks.NewMockArticleService(ctrl), svcmocks.NewMockInteractiveService(ctrl)
+				return svc, intr
 			},
 			reqBody: `
 {
@@ -94,8 +95,8 @@ func TestArticleHandler_Publish(t *testing.T) {
 		},
 		{
 			name: "publish错误",
-			mock: func(ctrl *gomock.Controller) service.ArticleService {
-				svc := svcmocks.NewMockArticleService(ctrl)
+			mock: func(ctrl *gomock.Controller) (service.ArticleService, service.InteractiveService) {
+				svc, intr := svcmocks.NewMockArticleService(ctrl), svcmocks.NewMockInteractiveService(ctrl)
 				svc.EXPECT().Publish(gomock.Any(), domain.Article{
 					Id:      1,
 					Title:   "新的标题",
@@ -104,7 +105,7 @@ func TestArticleHandler_Publish(t *testing.T) {
 						Id: 123,
 					},
 				}).Return(int64(0), errors.New("mock error"))
-				return svc
+				return svc, intr
 			},
 			reqBody: `
 {
@@ -114,7 +115,7 @@ func TestArticleHandler_Publish(t *testing.T) {
 }
 `,
 			wantCode: http.StatusOK,
-			wantRes: Result{
+			wantRes: ginx.Result{
 				Code: 5,
 				Msg:  "系统错误",
 			},
@@ -126,8 +127,8 @@ func TestArticleHandler_Publish(t *testing.T) {
 			defer ctrl.Finish()
 
 			// 构造Handler
-			svc := tc.mock(ctrl)
-			hdl := NewArticleHandler(logger.NewNopLogger(), svc)
+			svc, interact := tc.mock(ctrl)
+			hdl := NewArticleHandler(logger.NewNopLogger(), svc, interact)
 
 			// 准备服务器，注册路由
 			server := gin.Default()
@@ -152,7 +153,7 @@ func TestArticleHandler_Publish(t *testing.T) {
 			if recorder.Code != http.StatusOK {
 				return
 			}
-			var res Result
+			var res ginx.Result
 			err = json.NewDecoder(recorder.Body).Decode(&res)
 			assert.NoError(t, err)
 			assert.Equal(t, tc.wantRes, res)
