@@ -4,10 +4,19 @@ import (
 	"gindemo/webbook/pkg/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/prometheus/client_golang/prometheus"
 	"net/http"
+	"strconv"
 )
 
 var L logger.LoggerV1 = logger.NewNopLogger()
+
+var vector *prometheus.CounterVec
+
+func InitCounter(opt prometheus.CounterOpts) {
+	vector = prometheus.NewCounterVec(opt, []string{"code"})
+	prometheus.MustRegister(vector)
+}
 
 // WrapBodyAndClaims bizFn 就是你的业务逻辑
 func WrapBodyAndClaims[Req any, Claims jwt.Claims](
@@ -31,6 +40,7 @@ func WrapBodyAndClaims[Req any, Claims jwt.Claims](
 			return
 		}
 		res, err := bizFn(ctx, req, uc)
+		vector.WithLabelValues(strconv.Itoa(res.Code)).Inc()
 		if err != nil {
 			L.Error("执行业务逻辑失败", logger.Error(err))
 		}
@@ -47,6 +57,7 @@ func WrapBody[Req any](bizFn func(ctx *gin.Context, req Req) (Result, error)) gi
 		}
 		L.Debug("输入参数", logger.Field{Key: "req", Val: req})
 		res, err := bizFn(ctx, req)
+		vector.WithLabelValues(strconv.Itoa(res.Code)).Inc()
 		if err != nil {
 			L.Error("执行业务逻辑失败", logger.Error(err))
 		}
@@ -67,6 +78,7 @@ func WrapClaims[Claims any](bizFn func(ctx *gin.Context, uc Claims) (Result, err
 			return
 		}
 		res, err := bizFn(ctx, uc)
+		vector.WithLabelValues(strconv.Itoa(res.Code)).Inc()
 		if err != nil {
 			L.Error("执行业务逻辑失败", logger.Error(err))
 		}

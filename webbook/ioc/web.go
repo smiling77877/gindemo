@@ -4,10 +4,12 @@ import (
 	"gindemo/webbook/internal/web"
 	webook "gindemo/webbook/internal/web/jwt"
 	"gindemo/webbook/internal/web/middleware"
+	"gindemo/webbook/pkg/ginx"
 	"gindemo/webbook/pkg/ginx/middleware/prometheus"
 	"gindemo/webbook/pkg/logger"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	prometheus2 "github.com/prometheus/client_golang/prometheus"
 	"github.com/redis/go-redis/v9"
 	"strings"
 	"time"
@@ -32,6 +34,12 @@ func InitGinMiddlewares(redisClient redis.Cmdable, hdl webook.Handler, l logger.
 		Name:      "gin_http",
 		Help:      "统计 GIN 的HTTP接口数据",
 	}
+	ginx.InitCounter(prometheus2.CounterOpts{
+		Namespace: "geektime_daming",
+		Subsystem: "webook",
+		Name:      "biz_code",
+		Help:      "统计业务错误码",
+	})
 	return []gin.HandlerFunc{
 		cors.New(cors.Config{
 			AllowCredentials: true,
