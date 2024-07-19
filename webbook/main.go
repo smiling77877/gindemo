@@ -2,6 +2,8 @@ package main
 
 import (
 	"bytes"
+	"context"
+	"gindemo/webbook/ioc"
 	"github.com/fsnotify/fsnotify"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/pflag"
@@ -10,12 +12,19 @@ import (
 	"go.uber.org/zap"
 	"log"
 	"net/http"
+	"time"
 )
 
 func main() {
 	//initViperRemote()
 	initViperV1()
 	initLogger()
+	tpCancel := ioc.InitOTEL()
+	defer func() {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		tpCancel(ctx)
+	}()
 
 	app := InitWebServer()
 	initPrometheus()

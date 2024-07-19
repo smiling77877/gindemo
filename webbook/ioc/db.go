@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/plugin/opentelemetry/tracing"
 	"gorm.io/plugin/prometheus"
 )
 
@@ -33,10 +34,6 @@ func InitDB(l logger.LoggerV1) *gorm.DB {
 			//	LogLevel:      glogger.Info,
 			//}),
 		})
-	if err != nil {
-		panic(err)
-	}
-	err = dao.InitTables(db)
 	if err != nil {
 		panic(err)
 	}
@@ -70,6 +67,17 @@ func InitDB(l logger.LoggerV1) *gorm.DB {
 	})
 
 	err = db.Use(cb)
+	if err != nil {
+		panic(err)
+	}
+
+	err = db.Use(tracing.NewPlugin(tracing.WithoutMetrics(),
+		tracing.WithDBName("webook")))
+	if err != nil {
+		panic(err)
+	}
+
+	err = dao.InitTables(db)
 	if err != nil {
 		panic(err)
 	}

@@ -156,7 +156,7 @@ func (c *UserHandler) Signup(ctx *gin.Context, req SignUpReq) (ginx.Result, erro
 	}
 
 	//调用一下svc的方法
-	err = c.svc.SignUp(ctx, domain.User{
+	err = c.svc.SignUp(ctx.Request.Context(), domain.User{
 		Email:    req.Email,
 		Password: req.Password,
 	})
