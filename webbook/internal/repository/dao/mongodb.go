@@ -107,6 +107,11 @@ func (m *MongoDBArticleDAO) SyncStatus(ctx context.Context, uid int64, id int64,
 
 var _ ArticleDAO = &MongoDBArticleDAO{}
 
+func (m *MongoDBArticleDAO) ListPub(ctx context.Context, start time.Time, offset, limit int) ([]PublishedArticle, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func NewMongoDBArticleDAO(mdb *mongo.Database, node *snowflake.Node) *MongoDBArticleDAO {
 	return &MongoDBArticleDAO{
 		node:    node,

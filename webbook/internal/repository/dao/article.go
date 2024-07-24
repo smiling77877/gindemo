@@ -17,6 +17,7 @@ type ArticleDAO interface {
 	GetByAuthor(ctx context.Context, uid int64, offset, limit int) ([]Article, error)
 	GetById(ctx context.Context, id int64) (Article, error)
 	GetPubById(ctx context.Context, id int64) (PublishedArticle, error)
+	ListPub(ctx context.Context, start time.Time, offset, limit int) ([]PublishedArticle, error)
 }
 
 type ArticleGORMDAO struct {
@@ -169,6 +170,15 @@ func (a *ArticleGORMDAO) Insert(ctx context.Context, art Article) (int64, error)
 	art.Utime = now
 	err := a.db.WithContext(ctx).Create(&art).Error
 	return art.Id, err
+}
+
+func (a *ArticleGORMDAO) ListPub(ctx context.Context, start time.Time, offset, limit int) ([]PublishedArticle, error) {
+	var res []PublishedArticle
+	const ArticleStatusPublished = 2
+	err := a.db.WithContext(ctx).Where("utime < ? AND status = ?",
+		start.UnixMilli(), ArticleStatusPublished).Offset(offset).
+		Limit(limit).First(&res).Error
+	return res, err
 }
 
 func NewArticleGORMDAO(db *gorm.DB) ArticleDAO {

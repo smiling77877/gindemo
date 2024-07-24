@@ -6,6 +6,7 @@ import (
 	"gindemo/webbook/internal/repository/cache"
 	"gindemo/webbook/internal/repository/dao"
 	"gindemo/webbook/pkg/logger"
+	"github.com/ecodeclub/ekit/slice"
 )
 
 type InteractiveRepository interface {
@@ -18,6 +19,7 @@ type InteractiveRepository interface {
 	Get(ctx context.Context, biz string, id int64) (domain.Interactive, error)
 	Liked(ctx context.Context, biz string, id, uid int64) (bool, error)
 	Collected(ctx context.Context, biz string, id, uid int64) (bool, error)
+	GetByIds(ctx context.Context, biz string, ids []int64) ([]domain.Interactive, error)
 }
 
 type CachedInteractiveRepository struct {
@@ -130,6 +132,16 @@ func (c *CachedInteractiveRepository) Collected(ctx context.Context, biz string,
 	default:
 		return false, err
 	}
+}
+
+func (c *CachedInteractiveRepository) GetByIds(ctx context.Context, biz string, ids []int64) ([]domain.Interactive, error) {
+	intrs, err := c.dao.GetByIds(ctx, biz, ids)
+	if err != nil {
+		return nil, err
+	}
+	return slice.Map(intrs, func(idx int, src dao.Interactive) domain.Interactive {
+		return c.toDomain(src)
+	}), nil
 }
 
 func (c *CachedInteractiveRepository) toDomain(ie dao.Interactive) domain.Interactive {
