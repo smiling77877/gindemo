@@ -36,6 +36,7 @@ func (f *FailOverSMSService) Send(ctx context.Context, tplId string, args []stri
 // 起始下标轮询
 // 并且出错也轮询
 func (f *FailOverSMSService) SendV1(ctx context.Context, tplId string, args []string, numbers ...string) error {
+	// idx 是你的局部变量
 	idx := atomic.AddUint64(&f.idx, 1)
 	length := uint64(len(f.svcs))
 	// 我要迭代 length

@@ -25,6 +25,8 @@ type articleService struct {
 	repo     repository.ArticleRepository
 	producer article.Producer
 
+	userRepo repository.UserRepository
+
 	// V1 写法专用
 	readerRepo repository.ArticleReaderRepository
 	authorRepo repository.ArticleAuthorRepository

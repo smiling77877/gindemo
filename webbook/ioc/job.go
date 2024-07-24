@@ -4,13 +4,14 @@ import (
 	"gindemo/webbook/internal/job"
 	"gindemo/webbook/internal/service"
 	"gindemo/webbook/pkg/logger"
+	rlock "github.com/gotomicro/redis-lock"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/robfig/cron/v3"
 	"time"
 )
 
-func InitRankingJob(svc service.RankingService) *job.RankingJob {
-	return job.NewRankingJob(svc, time.Second*30)
+func InitRankingJob(svc service.RankingService, client *rlock.Client, l logger.LoggerV1) *job.RankingJob {
+	return job.NewRankingJob(svc, l, client, time.Second*30)
 }
 
 func InitJobs(l logger.LoggerV1, rjob *job.RankingJob) *cron.Cron {
@@ -27,7 +28,7 @@ func InitJobs(l logger.LoggerV1, rjob *job.RankingJob) *cron.Cron {
 		},
 	})
 	expr := cron.New(cron.WithSeconds())
-	_, err := expr.AddJob("@every 1m", builder.Build(rjob))
+	_, err := expr.AddJob("@every 1s", builder.Build(rjob))
 	if err != nil {
 		panic(err)
 	}

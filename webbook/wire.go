@@ -32,6 +32,7 @@ func InitWebServer() *App {
 		ioc.InitLogger,
 		ioc.InitSaramaClient,
 		ioc.InitSyncProducer,
+		ioc.InitRlockClient,
 		// DAO部分
 		dao.NewUserDAO,
 		dao.NewArticleGORMDAO,
