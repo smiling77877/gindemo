@@ -8,6 +8,7 @@ package startup
 
 import (
 	"gindemo/webbook/internal/events/article"
+	"gindemo/webbook/internal/job"
 	"gindemo/webbook/internal/repository"
 	"gindemo/webbook/internal/repository/cache"
 	"gindemo/webbook/internal/repository/dao"
@@ -97,10 +98,22 @@ func InitInteractiveService() service.InteractiveService {
 	return interactiveService
 }
 
+func InitJobScheduler() *job.Scheduler {
+	db := InitDB()
+	jobDAO := dao.NewGORMJobDAO(db)
+	cronJobRepository := repository.NewPreemptJobRepository(jobDAO)
+	loggerV1 := InitLogger()
+	cronJobService := service.NewCronJobService(cronJobRepository, loggerV1)
+	scheduler := job.NewScheduler(cronJobService, loggerV1)
+	return scheduler
+}
+
 // wire.go:
 
 var thirdPartySet = wire.NewSet(
 	InitRedis, InitDB, InitSaramaClient, InitSyncProducer, InitLogger)
+
+var jobProviderSet = wire.NewSet(service.NewCronJobService, repository.NewPreemptJobRepository, dao.NewGORMJobDAO)
 
 var userSvcProvider = wire.NewSet(dao.NewUserDAO, cache.NewUserCache, repository.NewCachedUserRepository, service.NewUserService)
 

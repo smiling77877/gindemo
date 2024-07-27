@@ -4,6 +4,7 @@ package startup
 
 import (
 	"gindemo/webbook/internal/events/article"
+	"gindemo/webbook/internal/job"
 	"gindemo/webbook/internal/repository"
 	"gindemo/webbook/internal/repository/cache"
 	"gindemo/webbook/internal/repository/dao"
@@ -19,6 +20,12 @@ import (
 
 var thirdPartySet = wire.NewSet( // 第三方依赖
 	InitRedis, InitDB, InitSaramaClient, InitSyncProducer, InitLogger)
+
+var jobProviderSet = wire.NewSet(
+	service.NewCronJobService,
+	repository.NewPreemptJobRepository,
+	dao.NewGORMJobDAO,
+)
 
 var userSvcProvider = wire.NewSet(
 	dao.NewUserDAO,
@@ -87,4 +94,9 @@ func InitArticleHandler(dao dao.ArticleDAO) *web.ArticleHandler {
 func InitInteractiveService() service.InteractiveService {
 	wire.Build(thirdPartySet, interactiveSvcSet)
 	return service.NewInteractiveService(nil)
+}
+
+func InitJobScheduler() *job.Scheduler {
+	wire.Build(jobProviderSet, thirdPartySet, job.NewScheduler)
+	return &job.Scheduler{}
 }
