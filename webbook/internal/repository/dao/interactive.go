@@ -163,7 +163,7 @@ func (dao *GORMInteractiveDAO) GetCollectInfo(ctx context.Context, biz string, i
 func (dao *GORMInteractiveDAO) GetByIds(ctx context.Context, biz string, ids []int64) ([]Interactive, error) {
 	var res []Interactive
 	err := dao.db.WithContext(ctx).
-		Where("biz = ? AND biz_id IN ?", biz, ids).First(&res).Error
+		Where("biz = ? AND biz_id IN ?", biz, ids).Find(&res).Error
 	return res, err
 }
 
