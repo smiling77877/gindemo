@@ -2,9 +2,9 @@ package integration
 
 import (
 	"context"
-	"gindemo/webbook/internal/domain"
+	"gindemo/webbook/interactive/domain"
+	"gindemo/webbook/interactive/repository/dao"
 	"gindemo/webbook/internal/integration/startup"
-	"gindemo/webbook/internal/repository/dao"
 	"github.com/redis/go-redis/v9"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"

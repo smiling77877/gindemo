@@ -4,7 +4,8 @@ import (
 	"context"
 	_ "embed"
 	"fmt"
-	"gindemo/webbook/internal/domain"
+	"gindemo/webbook/interactive/domain"
+	"gindemo/webbook/internal/repository/cache"
 	"github.com/redis/go-redis/v9"
 	"strconv"
 	"time"
@@ -77,7 +78,7 @@ func (i *InteractiveRedisCache) Get(ctx context.Context, biz string, id int64) (
 		return domain.Interactive{}, err
 	}
 	if len(res) == 0 {
-		return domain.Interactive{}, ErrKeyNotExist
+		return domain.Interactive{}, cache.ErrKeyNotExist
 	}
 	var intr domain.Interactive
 	intr.BizId = id

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	service2 "gindemo/webbook/interactive/service"
 	"gindemo/webbook/internal/domain"
 	"gindemo/webbook/internal/service"
 	svcmocks "gindemo/webbook/internal/service/mocks"
@@ -21,7 +22,7 @@ import (
 func TestArticleHandler_Publish(t *testing.T) {
 	testCases := []struct {
 		name string
-		mock func(ctrl *gomock.Controller) (service.ArticleService, service.InteractiveService)
+		mock func(ctrl *gomock.Controller) (service.ArticleService, service2.InteractiveService)
 
 		reqBody  string
 		wantCode int
@@ -29,7 +30,7 @@ func TestArticleHandler_Publish(t *testing.T) {
 	}{
 		{
 			name: "新建并且发表成功",
-			mock: func(ctrl *gomock.Controller) (service.ArticleService, service.InteractiveService) {
+			mock: func(ctrl *gomock.Controller) (service.ArticleService, service2.InteractiveService) {
 				svc, intr := svcmocks.NewMockArticleService(ctrl), svcmocks.NewMockInteractiveService(ctrl)
 				svc.EXPECT().Publish(gomock.Any(), domain.Article{
 					Title:   "我的标题",
@@ -54,7 +55,7 @@ func TestArticleHandler_Publish(t *testing.T) {
 		},
 		{
 			name: "修改并且发表成功",
-			mock: func(ctrl *gomock.Controller) (service.ArticleService, service.InteractiveService) {
+			mock: func(ctrl *gomock.Controller) (service.ArticleService, service2.InteractiveService) {
 				svc, intr := svcmocks.NewMockArticleService(ctrl), svcmocks.NewMockInteractiveService(ctrl)
 				svc.EXPECT().Publish(gomock.Any(), domain.Article{
 					Id:      1,
@@ -80,7 +81,7 @@ func TestArticleHandler_Publish(t *testing.T) {
 		},
 		{
 			name: "输入有误",
-			mock: func(ctrl *gomock.Controller) (service.ArticleService, service.InteractiveService) {
+			mock: func(ctrl *gomock.Controller) (service.ArticleService, service2.InteractiveService) {
 				svc, intr := svcmocks.NewMockArticleService(ctrl), svcmocks.NewMockInteractiveService(ctrl)
 				return svc, intr
 			},
@@ -95,7 +96,7 @@ func TestArticleHandler_Publish(t *testing.T) {
 		},
 		{
 			name: "publish错误",
-			mock: func(ctrl *gomock.Controller) (service.ArticleService, service.InteractiveService) {
+			mock: func(ctrl *gomock.Controller) (service.ArticleService, service2.InteractiveService) {
 				svc, intr := svcmocks.NewMockArticleService(ctrl), svcmocks.NewMockInteractiveService(ctrl)
 				svc.EXPECT().Publish(gomock.Any(), domain.Article{
 					Id:      1,

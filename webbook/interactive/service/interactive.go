@@ -2,8 +2,8 @@ package service
 
 import (
 	"context"
-	"gindemo/webbook/internal/domain"
-	"gindemo/webbook/internal/repository"
+	"gindemo/webbook/interactive/domain"
+	"gindemo/webbook/interactive/repository"
 	"golang.org/x/sync/errgroup"
 )
 

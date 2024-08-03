@@ -2,8 +2,9 @@ package repository
 
 import (
 	"context"
-	"gindemo/webbook/internal/domain"
-	"gindemo/webbook/internal/repository/cache"
+	"gindemo/webbook/interactive/domain"
+	"gindemo/webbook/interactive/repository/cache"
+	dao2 "gindemo/webbook/interactive/repository/dao"
 	"gindemo/webbook/internal/repository/dao"
 	"gindemo/webbook/pkg/logger"
 	"github.com/ecodeclub/ekit/slice"
@@ -23,12 +24,12 @@ type InteractiveRepository interface {
 }
 
 type CachedInteractiveRepository struct {
-	dao   dao.InteractiveDAO
+	dao   dao2.InteractiveDAO
 	cache cache.InteractiveCache
 	l     logger.LoggerV1
 }
 
-func NewCachedInteractiveRepository(dao dao.InteractiveDAO, l logger.LoggerV1, cache cache.InteractiveCache) InteractiveRepository {
+func NewCachedInteractiveRepository(dao dao2.InteractiveDAO, l logger.LoggerV1, cache cache.InteractiveCache) InteractiveRepository {
 	return &CachedInteractiveRepository{dao: dao, l: l, cache: cache}
 }
 
@@ -75,7 +76,7 @@ func (c *CachedInteractiveRepository) IncrReadCnt(ctx context.Context, biz strin
 //}
 
 func (c *CachedInteractiveRepository) AddCollectionItem(ctx context.Context, biz string, id, cid, uid int64) error {
-	err := c.dao.InsertCollectionBiz(ctx, dao.UserCollectionBiz{
+	err := c.dao.InsertCollectionBiz(ctx, dao2.UserCollectionBiz{
 		Biz:   biz,
 		BizId: id,
 		Cid:   cid,
@@ -139,12 +140,12 @@ func (c *CachedInteractiveRepository) GetByIds(ctx context.Context, biz string, 
 	if err != nil {
 		return nil, err
 	}
-	return slice.Map(intrs, func(idx int, src dao.Interactive) domain.Interactive {
+	return slice.Map(intrs, func(idx int, src dao2.Interactive) domain.Interactive {
 		return c.toDomain(src)
 	}), nil
 }
 
-func (c *CachedInteractiveRepository) toDomain(ie dao.Interactive) domain.Interactive {
+func (c *CachedInteractiveRepository) toDomain(ie dao2.Interactive) domain.Interactive {
 	return domain.Interactive{
 		BizId:      ie.BizId,
 		ReadCnt:    ie.ReadCnt,

@@ -1,4 +1,4 @@
-package article
+package events
 
 import (
 	"context"
@@ -8,6 +8,8 @@ import (
 	"github.com/IBM/sarama"
 	"time"
 )
+
+const TopicReadEvent = "article_read"
 
 type InteractiveReadEventConsumer struct {
 	repo   repository.InteractiveRepository
@@ -54,6 +56,11 @@ func (i *InteractiveReadEventConsumer) Start() error {
 		}
 	}()
 	return err
+}
+
+type ReadEvent struct {
+	Aid int64
+	Uid int64
 }
 
 func (i *InteractiveReadEventConsumer) Consume(msg *sarama.ConsumerMessage,

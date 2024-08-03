@@ -3,6 +3,10 @@
 package startup
 
 import (
+	repository2 "gindemo/webbook/interactive/repository"
+	cache2 "gindemo/webbook/interactive/repository/cache"
+	dao2 "gindemo/webbook/interactive/repository/dao"
+	service2 "gindemo/webbook/interactive/service"
 	"gindemo/webbook/internal/events/article"
 	"gindemo/webbook/internal/job"
 	"gindemo/webbook/internal/repository"
@@ -39,10 +43,10 @@ var articleSvcProvider = wire.NewSet(
 	dao.NewArticleGORMDAO,
 	service.NewArticleService)
 
-var interactiveSvcSet = wire.NewSet(dao.NewGORMInteractiveDAO,
-	cache.NewInteractiveRedisCache,
-	repository.NewCachedInteractiveRepository,
-	service.NewInteractiveService)
+var interactiveSvcSet = wire.NewSet(dao2.NewGORMInteractiveDAO,
+	cache2.NewInteractiveRedisCache,
+	repository2.NewCachedInteractiveRepository,
+	service2.NewInteractiveService)
 
 func InitWebServer() *gin.Engine {
 	wire.Build(
@@ -91,9 +95,9 @@ func InitArticleHandler(dao dao.ArticleDAO) *web.ArticleHandler {
 	return &web.ArticleHandler{}
 }
 
-func InitInteractiveService() service.InteractiveService {
+func InitInteractiveService() service2.InteractiveService {
 	wire.Build(thirdPartySet, interactiveSvcSet)
-	return service.NewInteractiveService(nil)
+	return service2.NewInteractiveService(nil)
 }
 
 func InitJobScheduler() *job.Scheduler {

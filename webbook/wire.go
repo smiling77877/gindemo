@@ -3,6 +3,11 @@
 package main
 
 import (
+	"gindemo/webbook/interactive/events"
+	repository2 "gindemo/webbook/interactive/repository"
+	cache2 "gindemo/webbook/interactive/repository/cache"
+	dao2 "gindemo/webbook/interactive/repository/dao"
+	service2 "gindemo/webbook/interactive/service"
 	"gindemo/webbook/internal/events/article"
 	"gindemo/webbook/internal/repository"
 	"gindemo/webbook/internal/repository/cache"
@@ -14,10 +19,10 @@ import (
 	"github.com/google/wire"
 )
 
-var interactiveSvcSet = wire.NewSet(dao.NewGORMInteractiveDAO,
-	cache.NewInteractiveRedisCache,
-	repository.NewCachedInteractiveRepository,
-	service.NewInteractiveService)
+var interactiveSvcSet = wire.NewSet(dao2.NewGORMInteractiveDAO,
+	cache2.NewInteractiveRedisCache,
+	repository2.NewCachedInteractiveRepository,
+	service2.NewInteractiveService)
 
 var rankingSvcSet = wire.NewSet(
 	cache.NewRankingRedisCache,
@@ -43,7 +48,7 @@ func InitWebServer() *App {
 		ioc.InitRankingJob,
 
 		article.NewSaramaSyncProducer,
-		article.NewInteractiveReadEventConsumer,
+		events.NewInteractiveReadEventConsumer,
 		ioc.InitConsumers,
 
 		// cache部分
