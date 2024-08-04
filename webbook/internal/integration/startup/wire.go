@@ -3,9 +3,6 @@
 package startup
 
 import (
-	repository2 "gindemo/webbook/interactive/repository"
-	cache2 "gindemo/webbook/interactive/repository/cache"
-	dao2 "gindemo/webbook/interactive/repository/dao"
 	service2 "gindemo/webbook/interactive/service"
 	"gindemo/webbook/internal/events/article"
 	"gindemo/webbook/internal/job"
@@ -42,11 +39,6 @@ var articleSvcProvider = wire.NewSet(
 	cache.NewArticleRedisCache,
 	dao.NewArticleGORMDAO,
 	service.NewArticleService)
-
-var interactiveSvcSet = wire.NewSet(dao2.NewGORMInteractiveDAO,
-	cache2.NewInteractiveRedisCache,
-	repository2.NewCachedInteractiveRepository,
-	service2.NewInteractiveService)
 
 func InitWebServer() *gin.Engine {
 	wire.Build(
