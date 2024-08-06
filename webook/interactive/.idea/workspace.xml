@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="91818f24-8135-4bfa-8a33-56c3b96f9118" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/../../buf.gen.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../../buf.gen.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../syntax/wrapper_func.go" beforeDir="false" afterPath="$PROJECT_DIR$/../../syntax/wrapper_func.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/../Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/../Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/api/proto/gen/intr/v1/interactive.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/../api/proto/gen/intr/v1/interactive.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/api/proto/gen/intr/v1/interactive_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/../api/proto/gen/intr/v1/interactive_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/api/proto/intr/v1/interactive.proto" beforeDir="false" afterPath="$PROJECT_DIR$/../api/proto/intr/v1/interactive.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/../app.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/config/dev.go" beforeDir="false" afterPath="$PROJECT_DIR$/../config/dev.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/config/dev.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../config/dev.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/config/k8s.go" beforeDir="false" afterPath="$PROJECT_DIR$/../config/k8s.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/config/redis.conf" beforeDir="false" afterPath="$PROJECT_DIR$/../config/redis.conf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/config/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/../config/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../docker-compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/domain/interactive.go" beforeDir="false" afterPath="$PROJECT_DIR$/domain/interactive.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/events/consumer.go" beforeDir="false" afterPath="$PROJECT_DIR$/events/consumer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/grpc/interactive.go" beforeDir="false" afterPath="$PROJECT_DIR$/grpc/interactive.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/integration/interactive_svc_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/integration/interactive_svc_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/integration/startup/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/integration/startup/db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/integration/startup/log.go" beforeDir="false" afterPath="$PROJECT_DIR$/integration/startup/log.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/integration/startup/redis.go" beforeDir="false" afterPath="$PROJECT_DIR$/integration/startup/redis.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/integration/startup/wire.go" beforeDir="false" afterPath="$PROJECT_DIR$/integration/startup/wire.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/integration/startup/wire_gen.go" beforeDir="false" afterPath="$PROJECT_DIR$/integration/startup/wire_gen.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/repository/cache/error.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/cache/error.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/repository/cache/interactive.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/cache/interactive.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/repository/cache/lua/incr_cnt.lua" beforeDir="false" afterPath="$PROJECT_DIR$/repository/cache/lua/incr_cnt.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/repository/dao/err.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/dao/err.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/repository/dao/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/dao/init.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/repository/dao/interactive.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/dao/interactive.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/repository/interactive.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/interactive.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/interactive/service/interactive.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/interactive.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/domain/article.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/domain/article.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/domain/async_sms.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/domain/async_sms.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/domain/history.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/domain/history.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/domain/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/domain/job.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/domain/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/domain/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/domain/wechat.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/domain/wechat.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/errs/code.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/errs/code.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/events/article/consumer.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/events/article/consumer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/events/article/history.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/events/article/history.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/events/article/producer.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/events/article/producer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/events/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/events/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/integration/article_gorm_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/integration/article_gorm_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/integration/article_mongodb_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/integration/article_mongodb_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/integration/sms_async_service_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/integration/sms_async_service_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/integration/startup/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/integration/startup/db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/integration/startup/kafka.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/integration/startup/kafka.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/integration/startup/log.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/integration/startup/log.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/integration/startup/mongo.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/integration/startup/mongo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/integration/startup/redis.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/integration/startup/redis.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/integration/startup/wechat.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/integration/startup/wechat.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/integration/startup/wire.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/integration/startup/wire.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/integration/startup/wire_gen.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/integration/startup/wire_gen.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/integration/user_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/integration/user_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/job/cron_job_builder.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/job/cron_job_builder.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/job/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/job/job.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/job/mysql_job.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/job/mysql_job.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/job/ranking_job.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/job/ranking_job.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/loggerxxx/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/loggerxxx/logger.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/article.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/article.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/article_author.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/article_author.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/article_reader.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/article_reader.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/article_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/article_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/async_sms_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/async_sms_repository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/cache/article.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/cache/article.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/cache/code.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/cache/code.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/cache/code_e2e_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/cache/code_e2e_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/cache/code_local.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/cache/code_local.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/cache/code_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/cache/code_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/cache/lua/set_code.lua" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/cache/lua/set_code.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/cache/lua/verify_code.lua" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/cache/lua/verify_code.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/cache/mocks/article.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/cache/mocks/article.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/cache/mocks/code.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/cache/mocks/code.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/cache/mocks/user.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/cache/mocks/user.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/cache/ranking.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/cache/ranking.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/cache/ranking_local.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/cache/ranking_local.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/cache/redismocks/cmd.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/cache/redismocks/cmd.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/cache/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/cache/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/code.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/code.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/article.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/article.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/article_author.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/article_author.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/article_reader.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/article_reader.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/async_sms.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/async_sms.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/init.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/init.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/job.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/mocks/article.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/mocks/article.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/mocks/article_author.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/mocks/article_author.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/mocks/article_reader.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/mocks/article_reader.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/mocks/async_sms.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/mocks/async_sms.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/mocks/user.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/mocks/user.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/mongodb.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/mongodb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/s3.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/s3.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/s3_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/s3_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/dao/user_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/dao/user_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/history.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/history.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/job.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/mocks/article.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/mocks/article.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/mocks/article_author.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/mocks/article_author.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/mocks/article_reader.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/mocks/article_reader.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/mocks/async_sms_repository.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/mocks/async_sms_repository.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/mocks/code.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/mocks/code.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/mocks/user.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/mocks/user.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/ranking.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/ranking.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/repository/user_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/repository/user_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/article.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/article.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/article_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/article_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/code.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/code.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/code_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/code_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/job.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/mocks/article.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/mocks/article.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/mocks/code.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/mocks/code.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/mocks/interactive.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/mocks/interactive.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/mocks/user.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/mocks/user.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/oauth2/wechat/prometheus/prometheus.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/oauth2/wechat/prometheus/prometheus.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/oauth2/wechat/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/oauth2/wechat/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/ranking_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/ranking_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/ranking_service_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/ranking_service_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/async/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/async/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/auth/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/auth/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/failover/failover.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/failover/failover.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/failover/failover_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/failover/failover_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/failover/timeout_failover.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/failover/timeout_failover.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/failover/timeout_failover_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/failover/timeout_failover_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/localsms/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/localsms/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/mocks/sms.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/mocks/sms.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/opentelemetry/opentelemetry.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/opentelemetry/opentelemetry.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/prometheus/prometheus.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/prometheus/prometheus.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/ratelimit/limiter.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/ratelimit/limiter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/ratelimit/limiter_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/ratelimit/limiter_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/tencent/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/tencent/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/tencent/service_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/tencent/service_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/sms/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/sms/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/service/user_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/service/user_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/web/article.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/web/article.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/web/article_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/web/article_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/web/article_vo.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/web/article_vo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/web/jwt/redis.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/web/jwt/redis.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/web/jwt/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/web/jwt/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/web/middleware/log.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/web/middleware/log.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/web/middleware/login.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/web/middleware/login.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/web/middleware/login_jwt.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/web/middleware/login_jwt.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/web/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/web/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/web/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/web/user.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/web/user_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/web/user_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/web/user_vo.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/web/user_vo.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/internal/web/wechat.go" beforeDir="false" afterPath="$PROJECT_DIR$/../internal/web/wechat.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/ioc/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/../ioc/db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/ioc/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/../ioc/job.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/ioc/kafka.go" beforeDir="false" afterPath="$PROJECT_DIR$/../ioc/kafka.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/ioc/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/../ioc/logger.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/ioc/otel.go" beforeDir="false" afterPath="$PROJECT_DIR$/../ioc/otel.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/ioc/redis.go" beforeDir="false" afterPath="$PROJECT_DIR$/../ioc/redis.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/ioc/sms.go" beforeDir="false" afterPath="$PROJECT_DIR$/../ioc/sms.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/ioc/web.go" beforeDir="false" afterPath="$PROJECT_DIR$/../ioc/web.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/ioc/wechat.go" beforeDir="false" afterPath="$PROJECT_DIR$/../ioc/wechat.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/../main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/ginx/middleware/prometheus/prometheus.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/ginx/middleware/prometheus/prometheus.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/ginx/middleware/ratelimit/builder.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/ginx/middleware/ratelimit/builder.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/ginx/middleware/ratelimit/slide_window.lua" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/ginx/middleware/ratelimit/slide_window.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/ginx/result.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/ginx/result.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/ginx/wrapper_func.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/ginx/wrapper_func.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/gormx/prometheus.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/gormx/prometheus.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/limiter/mocks/limiter.mock.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/limiter/mocks/limiter.mock.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/limiter/redis_slide_window.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/limiter/redis_slide_window.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/limiter/slide_window.lua" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/limiter/slide_window.lua" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/limiter/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/limiter/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/logger/fields.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/logger/fields.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/logger/nop.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/logger/nop.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/logger/types.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/logger/types.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/logger/zap_logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/logger/zap_logger.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/redisx/prometheus_hook.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/redisx/prometheus_hook.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/saramax/batch_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/saramax/batch_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/pkg/saramax/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/../pkg/saramax/handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/prometheus.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../prometheus.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/script/mysql/init.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../script/mysql/init.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/start" beforeDir="false" afterPath="$PROJECT_DIR$/../start" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/webook-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../webook-deployment.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/webook-record-ingress.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../webook-record-ingress.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/webook-record-mysql-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../webook-record-mysql-deployment.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/webook-record-mysql-pv.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../webook-record-mysql-pv.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/webook-record-mysql-pvc.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../webook-record-mysql-pvc.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/webook-record-mysql-service.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../webook-record-mysql-service.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/webook-record-redis-deployment.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../webook-record-redis-deployment.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/webook-record-redis-service.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../webook-record-redis-service.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/webook-service.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../webook-service.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/wire.go" beforeDir="false" afterPath="$PROJECT_DIR$/../wire.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webbook/wire_gen.go" beforeDir="false" afterPath="$PROJECT_DIR$/../wire_gen.go" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" url="file://$USER_HOME$/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.21.6.windows-amd64" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "smiling77877"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/smiling77877/gindemo.git",
+    "accountId": "c324381c-be33-4815-b07e-d1b38f87e7f0"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="2kFc3L7DJxBrUlidFw1XaUKoDB1" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "C:/Code/gindemo/webook/interactive",
+    "nodejs_package_manager_path": "npm"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-gosdk-33c477a475b1-e0158606a674-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-241.18034.61" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-GO-241.18034.61" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>

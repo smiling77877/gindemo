@@ -2,12 +2,12 @@ version: v1
 managed:
   enabled: true
   go_package_prefix:
-    default: "github.com/smiling77877/gindemo/webbook/api/proto/gen"
+    default: "github.com/smiling77877/gindemo/webook/api/proto/gen"
 plugins:
   - plugin: buf.build/protocolbuffers/go
-    out: webbook/api/proto/gen
+    out: webook/api/proto/gen
     opt: paths=source_relative
   - plugin: buf.build/grpc/go
-    out: webbook/api/proto/gen
+    out: webook/api/proto/gen
     opt:
       - paths=source_relative
