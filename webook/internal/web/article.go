@@ -2,8 +2,7 @@ package web
 
 import (
 	"fmt"
-	domain2 "gindemo/webook/interactive/domain"
-	service2 "gindemo/webook/interactive/service"
+	intrv1 "gindemo/webook/api/proto/gen/intr/v1"
 	"gindemo/webook/internal/domain"
 	"gindemo/webook/internal/service"
 	"gindemo/webook/internal/web/jwt"
@@ -19,13 +18,13 @@ import (
 
 type ArticleHandler struct {
 	svc     service.ArticleService
-	intrSvc service2.InteractiveService
+	intrSvc intrv1.InteractiveServiceClient
 	l       logger.LoggerV1
 	biz     string
 }
 
 func NewArticleHandler(l logger.LoggerV1,
-	svc service.ArticleService, intrSvc service2.InteractiveService) *ArticleHandler {
+	svc service.ArticleService, intrSvc intrv1.InteractiveServiceClient) *ArticleHandler {
 	return &ArticleHandler{
 		svc:     svc,
 		l:       l,
@@ -213,7 +212,7 @@ func (h *ArticleHandler) PubDetail(ctx *gin.Context) {
 	var (
 		eg   errgroup.Group
 		art  domain.Article
-		intr domain2.Interactive
+		intr *intrv1.GetResponse
 	)
 
 	uc := ctx.MustGet("user").(jwt.UserClaims)
@@ -225,7 +224,9 @@ func (h *ArticleHandler) PubDetail(ctx *gin.Context) {
 
 	eg.Go(func() error {
 		var er error
-		intr, er = h.intrSvc.Get(ctx, h.biz, id, uc.Uid)
+		intr, er = h.intrSvc.Get(ctx, &intrv1.GetRequest{
+			Biz: h.biz, BizId: id, Uid: uc.Uid,
+		})
 		return er
 	})
 
@@ -263,11 +264,11 @@ func (h *ArticleHandler) PubDetail(ctx *gin.Context) {
 			Content:    art.Content,
 			AuthorId:   art.Author.Id,
 			AuthorName: art.Author.Name,
-			ReadCnt:    intr.ReadCnt,
-			CollectCnt: intr.CollectCnt,
-			LikeCnt:    intr.LikeCnt,
-			Liked:      intr.Liked,
-			Collected:  intr.Collected,
+			ReadCnt:    intr.Intr.ReadCnt,
+			CollectCnt: intr.Intr.CollectCnt,
+			LikeCnt:    intr.Intr.LikeCnt,
+			Liked:      intr.Intr.Liked,
+			Collected:  intr.Intr.Collected,
 
 			Status: art.Status.ToUint8(),
 			Ctime:  art.Ctime.Format(time.DateTime),
@@ -281,10 +282,14 @@ func (h *ArticleHandler) Like(c *gin.Context, req ArticleLikeReq,
 	var err error
 	if req.Like {
 		// 点赞
-		err = h.intrSvc.Like(c, h.biz, req.Id, uc.Uid)
+		_, err = h.intrSvc.Like(c, &intrv1.LikeRequest{
+			Biz: h.biz, BizId: req.Id, Uid: uc.Uid,
+		})
 	} else {
 		// 取消点赞
-		err = h.intrSvc.CancelLike(c, h.biz, req.Id, uc.Uid)
+		_, err = h.intrSvc.CancelLike(c, &intrv1.CancelLikeRequest{
+			Biz: h.biz, BizId: req.Id, Uid: uc.Uid,
+		})
 	}
 	if err != nil {
 		return ginx.Result{
@@ -299,7 +304,9 @@ func (h *ArticleHandler) Like(c *gin.Context, req ArticleLikeReq,
 
 func (h *ArticleHandler) Collect(ctx *gin.Context, req ArticleCollectReq,
 	uc jwt.UserClaims) (ginx.Result, error) {
-	err := h.intrSvc.Collect(ctx, h.biz, req.Id, req.Cid, uc.Uid)
+	_, err := h.intrSvc.Collect(ctx, &intrv1.CollectRequest{
+		Biz: h.biz, BizId: req.Id, Uid: uc.Uid, Cid: req.Cid,
+	})
 	if err != nil {
 		return ginx.Result{
 			Code: 5,
