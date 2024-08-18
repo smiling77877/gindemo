@@ -33,7 +33,7 @@ func InitIntrClientV1(client *etcdv3.Client) intrv1.InteractiveServiceClient {
 		opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	}
 
-	cc, err := grpc.Dial(cfg.Addr, opts...)
+	cc, err := grpc.NewClient(cfg.Addr, opts...)
 	if err != nil {
 		panic(err)
 	}
