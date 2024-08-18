@@ -104,6 +104,7 @@ func (c *Callbacks) Before() func(db *gorm.DB) {
 
 func (c *Callbacks) After(typ string) func(db *gorm.DB) {
 	return func(db *gorm.DB) {
+		//db.Statement.Context = xxx
 		val, _ := db.Get("start_time")
 		start, ok := val.(time.Time)
 		if ok {

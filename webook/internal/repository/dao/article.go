@@ -173,6 +173,8 @@ func (a *ArticleGORMDAO) Insert(ctx context.Context, art Article) (int64, error)
 }
 
 func (a *ArticleGORMDAO) ListPub(ctx context.Context, start time.Time, offset, limit int) ([]PublishedArticle, error) {
+	ctx, cancel := context.WithTimeout(ctx, time.Millisecond*100)
+	defer cancel()
 	var res []PublishedArticle
 	const ArticleStatusPublished = 2
 	err := a.db.WithContext(ctx).Where("utime < ? AND status = ?",
