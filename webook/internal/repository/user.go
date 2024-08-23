@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"gindemo/webook/internal/domain"
 	"gindemo/webook/internal/repository/cache"
 	"gindemo/webook/internal/repository/dao"
@@ -127,6 +128,11 @@ func (repo *CachedUserRepository) FindById(ctx context.Context, uid int64) (doma
 	// 只要err为nil，就返回
 	if err == nil {
 		return du, nil
+	}
+
+	// 检测限流/熔断/降级标记位
+	if ctx.Value("downgrade") == "true" {
+		return du, errors.New("触发降级，不再查询数据库")
 	}
 
 	// err不为nil，就要查询数据库
