@@ -1,0 +1,17 @@
+//syntax = "proto3";
+//
+//package reward.v1;
+//option go_package="reward/v1;rewardv1";
+//
+//service RewardService {
+//  rpc PreReward(PreRewardRequest) returns(PreRewardResponse);
+//  rpc GetReward(GetRewardRequest) returns(GetRewardResponse);
+//}
+//
+//message GetRewardRequest {
+//  // rid 和 打赏的人
+//  int64 rid = 1;
+//  int64 uid = 2;
+//}
+
+// 正常来说，对于外面的人来说只关心打赏成功了没

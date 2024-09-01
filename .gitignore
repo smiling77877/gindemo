@@ -19,3 +19,8 @@
 
 # Go workspace file
 go.work
+
+.idea
+test.db
+/webook/interactive/integration/data.sql
+/webook/payment/config/cert/
