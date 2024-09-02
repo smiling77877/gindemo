@@ -2,6 +2,7 @@ package ioc
 
 import (
 	"context"
+	"gindemo/webook/payment/events"
 	"gindemo/webook/payment/repository"
 	"gindemo/webook/payment/service/wechat"
 	"gindemo/webook/pkg/logger"
@@ -33,8 +34,8 @@ func InitWechatClient(cfg WechatConfig) *core.Client {
 }
 
 func InitWechatNativeService(cli *core.Client, repo repository.PaymentRepository,
-	l logger.LoggerV1, cfg WechatConfig) *wechat.NativePaymentService {
-	return wechat.NewNativePaymentService(cfg.AppID, cfg.MchID, repo, &native.NativeApiService{
+	l logger.LoggerV1, producer events.Producer, cfg WechatConfig) *wechat.NativePaymentService {
+	return wechat.NewNativePaymentService(cfg.AppID, cfg.MchID, repo, producer, &native.NativeApiService{
 		Client: cli,
 	}, l)
 }

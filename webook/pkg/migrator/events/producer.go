@@ -15,7 +15,7 @@ type SaramaProducer struct {
 	topic string
 }
 
-func NewSaramaProducer(topic string, p sarama.SyncProducer) *SaramaProducer {
+func NewSaramaProducer(topic string, p sarama.SyncProducer) Producer {
 	return &SaramaProducer{
 		topic: topic,
 		p:     p,

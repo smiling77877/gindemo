@@ -1,7 +1,9 @@
 package ioc
 
 import (
+	grpc2 "gindemo/webook/payment/grpc"
 	"gindemo/webook/pkg/grpcx"
+	ilogger "gindemo/webook/pkg/grpcx/interceptor/logger"
 	"gindemo/webook/pkg/logger"
 	"github.com/spf13/viper"
 	clientv3 "go.etcd.io/etcd/client/v3"

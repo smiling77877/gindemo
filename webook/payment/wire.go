@@ -1,6 +1,9 @@
+//go:build wireinject
+
 package main
 
 import (
+	"gindemo/webook/payment/grpc"
 	"gindemo/webook/payment/ioc"
 	"gindemo/webook/payment/repository"
 	"gindemo/webook/payment/repository/dao"
@@ -26,7 +29,6 @@ func InitApp() *wego.App {
 		web.NewWechatHandler,
 		ioc.InitGinServer,
 		ioc.InitLogger,
-		wire.Struct(new(wego.App), "WebServer", "GRPCServer"),
-	)
+		wire.Struct(new(wego.App), "WebServer", "GRPCServer"))
 	return new(wego.App)
 }

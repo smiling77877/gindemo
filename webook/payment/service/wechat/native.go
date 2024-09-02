@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"gindemo/webook/payment/domain"
+	"gindemo/webook/payment/events"
 	"gindemo/webook/payment/repository"
 	"gindemo/webook/pkg/logger"
 	"github.com/wechatpay-apiv3/wechatpay-go/core"
@@ -36,13 +37,14 @@ type NativePaymentService struct {
 	// USERPAYING: 用户支付中（付款码支付）
 	// PAYERROR: 支付失败（其他原因，如银行返回失败）
 	nativeCBTypeToStatus map[string]domain.PaymentStatus
+	producer             events.Producer
 }
 
-func NewNativePaymentService(appID string, mchID string,
-	repo repository.PaymentRepository, svc *native.NativeApiService,
+func NewNativePaymentService(appID, mchID string,
+	repo repository.PaymentRepository, producer events.Producer, svc *native.NativeApiService,
 	l logger.LoggerV1) *NativePaymentService {
 	return &NativePaymentService{appID: appID, mchID: mchID, notifyURL: "http://wechat.meoying.com/pay/callback",
-		repo: repo, svc: svc, l: l,
+		repo: repo, producer: producer, svc: svc, l: l,
 		nativeCBTypeToStatus: map[string]domain.PaymentStatus{
 			"SUCCESS":  domain.PaymentStatusSuccess,
 			"PAYERROR": domain.PaymentStatusFailed,

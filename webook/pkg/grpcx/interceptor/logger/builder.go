@@ -21,7 +21,7 @@ func NewInterceptorBuilder(l logger.LoggerV1) *InterceptorBuilder {
 	return &InterceptorBuilder{l: l}
 }
 
-func (b *InterceptorBuilder) BuildServerInterceptor() grpc.UnaryServerInterceptor {
+func (b *InterceptorBuilder) BuildServerUnaryInterceptor() grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp any, err error) {
 		start := time.Now()
 		event := "normal"
