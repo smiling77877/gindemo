@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	intrv1 "gindemo/webook/api/proto/gen/intr/v1"
+	rewardv1 "gindemo/webook/api/proto/gen/reward/v1"
 	"gindemo/webook/internal/domain"
 	"gindemo/webook/internal/service"
 	"gindemo/webook/internal/web/jwt"
@@ -19,17 +20,20 @@ import (
 type ArticleHandler struct {
 	svc     service.ArticleService
 	intrSvc intrv1.InteractiveServiceClient
+	reward  rewardv1.RewardServiceClient
 	l       logger.LoggerV1
 	biz     string
 }
 
 func NewArticleHandler(l logger.LoggerV1,
-	svc service.ArticleService, intrSvc intrv1.InteractiveServiceClient) *ArticleHandler {
+	svc service.ArticleService, reward rewardv1.RewardServiceClient,
+	intrSvc intrv1.InteractiveServiceClient) *ArticleHandler {
 	return &ArticleHandler{
 		svc:     svc,
 		l:       l,
 		intrSvc: intrSvc,
 		biz:     "article",
+		reward:  reward,
 	}
 }
 
@@ -51,6 +55,7 @@ func (h *ArticleHandler) RegisterRoutes(server *gin.Engine) {
 	// 传入一个参数，true 就是点赞，false 就是不点赞
 	pub.POST("/like", ginx.WrapBodyAndClaims(h.Like))
 	pub.POST("/collect", ginx.WrapBodyAndClaims(h.Collect))
+	pub.POST("/reward", ginx.WrapBodyAndClaims[ArticleRewardReq, jwt.UserClaims](h.Reward))
 }
 
 // Edit 接收 Article 输入, 返回一个 ID, 文章的 ID
@@ -315,5 +320,33 @@ func (h *ArticleHandler) Collect(ctx *gin.Context, req ArticleCollectReq,
 	}
 	return ginx.Result{
 		Msg: "OK",
+	}, nil
+}
+
+func (h *ArticleHandler) Reward(ctx *gin.Context, req ArticleRewardReq, uc jwt.UserClaims) (ginx.Result, error) {
+	// 在这里分发
+	// h.reward.WechatPreReward
+	// h.reward.AlipayPreReward
+	artResp, err := h.svc.GetPubById(ctx, req.Id, uc.Uid)
+	if err != nil {
+		return ginx.Result{Msg: "系统错误"}, err
+	}
+	// 最关键的一步，就是拿到二维码
+	resp, err := h.reward.PreReward(ctx, &rewardv1.PreRewardRequest{
+		Biz:       "article",
+		BizId:     artResp.Id,
+		BizName:   artResp.Title,
+		TargetUid: artResp.Author.Id,
+		Uid:       uc.Uid,
+		Amt:       req.Amt,
+	})
+	if err != nil {
+		return ginx.Result{Msg: "系统错误"}, err
+	}
+	return ginx.Result{
+		Data: map[string]any{
+			"codeURL": resp.CodeUrl,
+			"rid":     resp.Rid,
+		},
 	}, nil
 }

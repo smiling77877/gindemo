@@ -5,6 +5,7 @@ import (
 	"gindemo/webook/reward/domain"
 )
 
+//go:generate mockgen -source=./types.go -destination=mocks/reward.mock.go -package=svcmocks RewardService
 type RewardService interface {
 	// PreReward 准备打赏，
 	// 你也可以直接理解为对标到创建一个打赏的订单
