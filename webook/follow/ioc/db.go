@@ -2,7 +2,7 @@ package ioc
 
 import (
 	"fmt"
-	"gindemo/webook/comment/repository/dao"
+	"gindemo/webook/follow/repository/dao"
 	"gindemo/webook/pkg/logger"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
@@ -24,7 +24,7 @@ func InitDB(l logger.LoggerV1) *gorm.DB {
 		panic(fmt.Errorf("初始化配置失败 %v, 原因 %w", c, err))
 	}
 	db, err := gorm.Open(mysql.Open(c.DSN), &gorm.Config{
-		// 使用 DEBUG 来打印
+		// 使用 DEBUG来打印
 		Logger: glogger.Default.LogMode(glogger.Info),
 	})
 	if err != nil {
@@ -34,7 +34,7 @@ func InitDB(l logger.LoggerV1) *gorm.DB {
 	// 接入 prometheus
 	err = db.Use(prometheus.New(prometheus.Config{
 		DBName: "webook",
-		// 每 15 秒采集一些数据
+		// 每15秒采集一次数据
 		RefreshInterval: 15,
 		MetricsCollector: []prometheus.MetricsCollector{
 			&prometheus.MySQL{
@@ -49,27 +49,9 @@ func InitDB(l logger.LoggerV1) *gorm.DB {
 	if err != nil {
 		panic(err)
 	}
-
-	//prom := prometheus2.Callbacks{
-	//	Namespace:  "geekbang_daming",
-	//	Subsystem:  "webook",
-	//	Name:       "gorm",
-	//	InstanceID: "my-instance-1",
-	//	Help:       "gorm DB 查询",
-	//}
-	//err = prom.Register(db)
-	//if err != nil {
-	//	panic(err)
-	//}
 	err = dao.InitTables(db)
 	if err != nil {
 		panic(err)
 	}
 	return db
 }
-
-//type gormLoggerFunc func(msg string, fields ...logger.Field)
-//
-//func (g gormLoggerFunc) Printf(msg string, args ...interface{}) {
-//	g(msg, logger.Field{Key: "args", Val: args})
-//}

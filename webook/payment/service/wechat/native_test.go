@@ -45,7 +45,7 @@ func TestNativeService_Prepay(t *testing.T) {
 	nativeSvc := &native.NativeApiService{
 		Client: client,
 	}
-	svc := NewNativePaymentService(appid, mchID, nil, nativeSvc, logger.NewNopLogger())
+	svc := NewNativePaymentService(appid, mchID, nil, nativeSvc, logger.NewNoOpLogger())
 	codeUrl, err := svc.Prepay(ctx, domain.Payment{
 		Amt: domain.Amount{
 			Currency: "CNY",

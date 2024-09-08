@@ -2,6 +2,6 @@ package startup
 
 import "gindemo/webook/pkg/logger"
 
-func InitLogger() logger.LoggerV1 {
+func InitLog() logger.LoggerV1 {
 	return logger.NewNoOpLogger()
 }

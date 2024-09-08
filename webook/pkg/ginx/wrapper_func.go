@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-var L logger.LoggerV1 = logger.NewNopLogger()
+var L logger.LoggerV1 = logger.NewNoOpLogger()
 
 var vector *prometheus.CounterVec
 
