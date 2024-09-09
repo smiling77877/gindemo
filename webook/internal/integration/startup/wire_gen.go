@@ -50,12 +50,13 @@ func InitWebServer() *gin.Engine {
 	syncProducer := InitSyncProducer(client)
 	producer := article.NewSaramaSyncProducer(syncProducer)
 	articleService := service.NewArticleService(articleRepository, producer)
+	rewardServiceClient := InitRewardServiceClient()
 	interactiveDAO := dao2.NewGORMInteractiveDAO(db)
 	interactiveCache := cache2.NewInteractiveRedisCache(cmdable)
 	interactiveRepository := repository2.NewCachedInteractiveRepository(interactiveDAO, loggerV1, interactiveCache)
 	interactiveService := service2.NewInteractiveService(interactiveRepository)
 	interactiveServiceClient := ioc.InitIntrClient(interactiveService)
-	articleHandler := web.NewArticleHandler(loggerV1, articleService, interactiveServiceClient)
+	articleHandler := web.NewArticleHandler(loggerV1, articleService, rewardServiceClient, interactiveServiceClient)
 	wechatService := InitWechatService(loggerV1)
 	oAuth2WechatHandler := web.NewOAuth2WechatHandler(wechatService, handler, userService)
 	engine := ioc.InitWebServer(v, userHandler, articleHandler, oAuth2WechatHandler)
@@ -84,12 +85,13 @@ func InitArticleHandler(dao3 dao.ArticleDAO) *web.ArticleHandler {
 	syncProducer := InitSyncProducer(client)
 	producer := article.NewSaramaSyncProducer(syncProducer)
 	articleService := service.NewArticleService(articleRepository, producer)
+	rewardServiceClient := InitRewardServiceClient()
 	interactiveDAO := dao2.NewGORMInteractiveDAO(db)
 	interactiveCache := cache2.NewInteractiveRedisCache(cmdable)
 	interactiveRepository := repository2.NewCachedInteractiveRepository(interactiveDAO, loggerV1, interactiveCache)
 	interactiveService := service2.NewInteractiveService(interactiveRepository)
 	interactiveServiceClient := ioc.InitIntrClient(interactiveService)
-	articleHandler := web.NewArticleHandler(loggerV1, articleService, interactiveServiceClient)
+	articleHandler := web.NewArticleHandler(loggerV1, articleService, rewardServiceClient, interactiveServiceClient)
 	return articleHandler
 }
 
@@ -125,4 +127,4 @@ var userSvcProvider = wire.NewSet(dao.NewUserDAO, cache.NewUserCache, repository
 
 var articleSvcProvider = wire.NewSet(repository.NewCachedArticleRepository, cache.NewArticleRedisCache, dao.NewArticleGORMDAO, service.NewArticleService)
 
-var interactiveSvcSet = wire.NewSet(dao2.NewGORMInteractiveDAO, cache2.NewInteractiveRedisCache, repository2.NewCachedInteractiveRepository, service2.NewInteractiveService, ioc.InitIntrClient)
+var interactiveSvcSet = wire.NewSet(dao2.NewGORMInteractiveDAO, cache2.NewInteractiveRedisCache, repository2.NewCachedInteractiveRepository, service2.NewInteractiveService, InitRewardServiceClient, ioc.InitIntrClient)
