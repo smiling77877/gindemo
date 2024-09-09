@@ -22,10 +22,10 @@ func NewGrpcxServer(intrSvc *grpc2.InteractiveServiceServer, l logger.LoggerV1) 
 		panic(err)
 	}
 	return &grpcx.Server{
-		Server:   s,
-		EtcdAddr: cfg.EtcdAddr,
-		Port:     cfg.Port,
-		Name:     cfg.Name,
-		L:        l,
+		Server: s,
+		//EtcdAddr: cfg.EtcdAddr,
+		Port: cfg.Port,
+		Name: cfg.Name,
+		L:    l,
 	}
 }

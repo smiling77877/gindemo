@@ -18,6 +18,10 @@ import (
 	"gindemo/webook/internal/web"
 	ijwt "gindemo/webook/internal/web/jwt"
 	"gindemo/webook/ioc"
+	repository3 "gindemo/webook/reward/repository"
+	cache3 "gindemo/webook/reward/repository/cache"
+	dao3 "gindemo/webook/reward/repository/dao"
+	service3 "gindemo/webook/reward/service"
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 )
@@ -50,12 +54,19 @@ var interactiveSvcSet = wire.NewSet(dao2.NewGORMInteractiveDAO,
 	ioc.InitIntrClient,
 )
 
+var rewardSvcSet = wire.NewSet(dao3.NewRewardGORMDAO,
+	cache3.NewRewardRedisCache, repository3.NewRewardRepository,
+	service3.NewWechatNativeRewardService,
+	ioc.InitRewardClient,
+)
+
 func InitWebServer() *gin.Engine {
 	wire.Build(
 		thirdPartySet,
 		userSvcProvider,
 		articleSvcProvider,
 		interactiveSvcSet,
+		rewardSvcSet,
 		// cache部分
 		cache.NewCodeCache,
 		// repository部分
