@@ -24,14 +24,14 @@ require (
 	github.com/hashicorp/golang-lru v0.5.4
 	github.com/lithammer/shortuuid/v4 v4.0.0
 	github.com/prometheus/client_golang v1.19.1
-	github.com/redis/go-redis/v9 v9.6.1
+	github.com/redis/go-redis/v9 v9.3.0
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.9.0
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.928
 	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sms v1.0.928
-	github.com/zeromicro/go-zero v1.7.0
+	github.com/zeromicro/go-zero v1.6.1
 	go.etcd.io/etcd/client/v3 v3.5.15
 	go.mongodb.org/mongo-driver v1.16.0
 	go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin v0.53.0
@@ -92,6 +92,7 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.22.0 // indirect
+	github.com/go-redis/redis/v8 v8.11.5 // indirect
 	github.com/goccy/go-json v0.10.3 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
